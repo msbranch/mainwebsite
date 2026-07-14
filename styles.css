@@ -147,7 +147,7 @@ p + p {
 /* ---------- Sections ---------- */
 
 .section {
-  padding: 96px 0;
+  padding: 60px 0;
 }
 
 .section--black {
@@ -256,10 +256,10 @@ p + p {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 10, 10, 0.82);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: saturate(180%) blur(14px);
   -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .nav__inner {
@@ -277,7 +277,7 @@ p + p {
   font-family: var(--serif);
   font-size: 20px;
   font-weight: 600;
-  color: var(--white);
+  color: var(--black);
   letter-spacing: -0.01em;
 }
 
@@ -295,10 +295,10 @@ p + p {
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
-  background: rgba(10, 10, 10, 0.97);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: saturate(180%) blur(14px);
   -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-light);
   padding: 8px var(--pad) 22px;
   display: none;
 }
@@ -312,13 +312,13 @@ p + p {
   padding: 15px 0;
   font-size: 16px;
   font-weight: 500;
-  color: #dcdcdc;
-  border-bottom: 1px solid var(--border-dark);
+  color: #333333;
+  border-bottom: 1px solid var(--border-light);
   transition: color 0.18s ease;
 }
 
 .nav__links a:hover {
-  color: var(--white);
+  color: var(--black);
 }
 
 .nav__links a.nav__cta {
@@ -353,7 +353,7 @@ p + p {
   display: block;
   width: 26px;
   height: 2px;
-  background: var(--white);
+  background: var(--black);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -362,7 +362,7 @@ p + p {
 .hero {
   background: var(--black);
   color: var(--white);
-  padding: 120px 0 110px;
+  padding: 92px 0 80px;
 }
 
 .hero .display {
@@ -372,7 +372,7 @@ p + p {
 .page-hero {
   background: var(--black);
   color: var(--white);
-  padding: 110px 0 90px;
+  padding: 84px 0 60px;
 }
 
 .page-hero .display {
@@ -383,7 +383,7 @@ p + p {
 
 .section-head {
   max-width: 720px;
-  margin-bottom: 56px;
+  margin-bottom: 40px;
 }
 
 .section-head--center {
@@ -740,7 +740,7 @@ a.card:hover .card__cta {
   }
 
   .section {
-    padding: 72px 0;
+    padding: 48px 0;
   }
 }
 
