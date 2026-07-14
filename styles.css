@@ -9,6 +9,7 @@
   --off-white: #f7f6f4;
   --lavender: #C9B8E8;
   --powder: #B8D4E8;
+  --powder-deep: #5E93B8;
 
   --gray-text: #6b6b6b;
   --gray-muted: #9a9a9a;
@@ -431,6 +432,10 @@ a.card:hover {
   color: var(--black);
 }
 
+.section--black .card__body {
+  color: var(--black);
+}
+
 .section--black a.card:hover {
   background: var(--off-white);
   border-color: var(--lavender);
@@ -446,7 +451,7 @@ a.card.card--inactive:hover {
 
 .card__num {
   font-family: var(--serif);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--lavender);
   letter-spacing: 0.04em;
@@ -462,7 +467,7 @@ a.card.card--inactive:hover {
 
 .card__body {
   font-size: 0.9375rem;
-  color: var(--gray-text);
+  color: var(--black);
   flex-grow: 1;
 }
 
@@ -576,7 +581,7 @@ a.card:hover .card__cta {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--powder);
+  color: var(--powder-deep);
   margin-bottom: 12px;
 }
 
