@@ -421,6 +421,25 @@ a.card:hover {
   background: var(--off-white);
 }
 
+/* Cards on dark sections: outlined dark tiles with light text */
+.section--black .card {
+  background: transparent;
+  border-color: var(--border-dark);
+}
+
+.section--black .card__title {
+  color: var(--white);
+}
+
+.section--black .card__body {
+  color: #c9c9c9;
+}
+
+.section--black a.card:hover {
+  background: #141414;
+  border-color: var(--lavender);
+}
+
 .card--inactive {
   opacity: 0.78;
 }
@@ -655,6 +674,10 @@ a.card:hover .card__cta {
   max-width: 520px;
   margin: 22px auto 0;
   color: var(--gray-text);
+}
+
+.section--black .mail-inner p {
+  color: #c9c9c9;
 }
 
 .mail-form {
