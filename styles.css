@@ -37,7 +37,7 @@ body {
   color: var(--black);
   background: var(--white);
   line-height: 1.6;
-  font-size: 17px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -92,7 +92,7 @@ img {
 
 .label {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -115,7 +115,7 @@ h1, h2, h3 {
 .display {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-size: clamp(2.3375rem, 5.5vw, 4.1375rem);
   line-height: 1.08;
   letter-spacing: -0.015em;
 }
@@ -123,7 +123,7 @@ h1, h2, h3 {
 .headline {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-size: clamp(1.8375rem, 4vw, 2.9375rem);
   line-height: 1.12;
   letter-spacing: -0.01em;
 }
@@ -133,7 +133,7 @@ em, .em {
 }
 
 .subtext {
-  font-size: 1.12rem;
+  font-size: 1.0575rem;
   color: var(--gray-text);
   max-width: 620px;
   margin-top: 26px;
@@ -147,7 +147,7 @@ p + p {
 /* ---------- Sections ---------- */
 
 .section {
-  padding: 60px 0;
+  padding: 48px 0;
 }
 
 .section--black {
@@ -183,7 +183,7 @@ p + p {
 .btn {
   display: inline-block;
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
   padding: 15px 30px;
@@ -231,7 +231,7 @@ p + p {
 
 .textlink {
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--lavender);
   display: inline-block;
@@ -275,7 +275,7 @@ p + p {
 
 .nav__logo {
   font-family: var(--serif);
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
   color: var(--black);
   letter-spacing: -0.01em;
@@ -310,7 +310,7 @@ p + p {
 .nav__links a {
   width: 100%;
   padding: 15px 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: #333333;
   border-bottom: 1px solid var(--border-light);
@@ -362,7 +362,7 @@ p + p {
 .hero {
   background: var(--black);
   color: var(--white);
-  padding: 92px 0 80px;
+  padding: 44px 0 48px;
 }
 
 .hero .display {
@@ -372,7 +372,7 @@ p + p {
 .page-hero {
   background: var(--black);
   color: var(--white);
-  padding: 84px 0 60px;
+  padding: 60px 0 44px;
 }
 
 .page-hero .display {
@@ -383,7 +383,7 @@ p + p {
 
 .section-head {
   max-width: 720px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .section-head--center {
@@ -421,22 +421,18 @@ a.card:hover {
   background: var(--off-white);
 }
 
-/* Cards on dark sections: outlined dark tiles with light text */
+/* Cards on dark sections: white tiles with dark text for contrast */
 .section--black .card {
-  background: transparent;
-  border-color: var(--border-dark);
+  background: var(--white);
+  border-color: var(--border-light);
 }
 
 .section--black .card__title {
-  color: var(--white);
-}
-
-.section--black .card__body {
-  color: #c9c9c9;
+  color: var(--black);
 }
 
 .section--black a.card:hover {
-  background: #141414;
+  background: var(--off-white);
   border-color: var(--lavender);
 }
 
@@ -450,7 +446,7 @@ a.card.card--inactive:hover {
 
 .card__num {
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--lavender);
   letter-spacing: 0.04em;
@@ -459,13 +455,13 @@ a.card.card--inactive:hover {
 
 .card__title {
   font-family: var(--serif);
-  font-size: 1.7rem;
+  font-size: 1.6375rem;
   font-weight: 500;
   margin-bottom: 14px;
 }
 
 .card__body {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   color: var(--gray-text);
   flex-grow: 1;
 }
@@ -476,7 +472,7 @@ a.card.card--inactive:hover {
 
 .card__cta {
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--lavender);
   transition: opacity 0.18s ease;
@@ -487,7 +483,7 @@ a.card:hover .card__cta {
 }
 
 .card__soon {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -529,7 +525,7 @@ a.card:hover .card__cta {
 }
 
 .photo-ph__label {
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gray-muted);
@@ -551,7 +547,7 @@ a.card:hover .card__cta {
 
 .pillar-numeral {
   font-family: var(--serif);
-  font-size: 120px;
+  font-size: 119px;
   font-weight: 600;
   line-height: 1;
   color: var(--lavender);
@@ -576,17 +572,17 @@ a.card:hover .card__cta {
 }
 
 .stat-card__k {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gray-text);
+  color: var(--powder);
   margin-bottom: 12px;
 }
 
 .stat-card__v {
   font-family: var(--serif);
-  font-size: 1.35rem;
+  font-size: 1.2875rem;
   font-weight: 500;
   line-height: 1.3;
 }
@@ -607,7 +603,7 @@ a.card:hover .card__cta {
 
 .step__num {
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--lavender);
   margin-bottom: 16px;
@@ -615,13 +611,13 @@ a.card:hover .card__cta {
 
 .step__title {
   font-family: var(--serif);
-  font-size: 1.45rem;
+  font-size: 1.3875rem;
   font-weight: 500;
   margin-bottom: 12px;
 }
 
 .step__body {
-  font-size: 0.98rem;
+  font-size: 0.9175rem;
   color: #b8b8b8;
 }
 
@@ -629,7 +625,7 @@ a.card:hover .card__cta {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 23px;
   color: var(--lavender);
 }
 
@@ -691,7 +687,7 @@ a.card:hover .card__cta {
   flex: 1 1 auto;
   min-width: 0;
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 15px;
   color: var(--black);
   background: var(--white);
   border: 1px solid var(--border-light);
@@ -716,7 +712,7 @@ a.card:hover .card__cta {
 .mail-msg {
   min-height: 1.4em;
   margin-top: 18px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -749,13 +745,13 @@ a.card:hover .card__cta {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  grid-template-columns: 1.8fr 1fr 1fr;
   gap: 40px;
 }
 
 .footer__logo {
   font-family: var(--serif);
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -768,7 +764,7 @@ a.card:hover .card__cta {
 .footer__tag {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 0.9875rem;
   color: #bcbcbc;
   margin-bottom: 20px;
   max-width: 26ch;
@@ -776,11 +772,11 @@ a.card:hover .card__cta {
 
 .footer__col h4 {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gray-muted);
+  color: var(--lavender);
   margin-bottom: 18px;
 }
 
@@ -793,7 +789,7 @@ a.card:hover .card__cta {
 }
 
 .footer__col a {
-  font-size: 15px;
+  font-size: 14px;
   color: #cfcfcf;
   transition: color 0.18s ease;
 }
@@ -806,7 +802,7 @@ a.card:hover .card__cta {
   border-top: 1px solid var(--border-dark);
   margin-top: 56px;
   padding-top: 30px;
-  font-size: 12.5px;
+  font-size: 11.5px;
   line-height: 1.7;
   color: #7c7c7c;
   max-width: 100%;
@@ -840,7 +836,7 @@ a.card:hover .card__cta {
   }
 
   .section {
-    padding: 48px 0;
+    padding: 40px 0;
   }
 }
 
@@ -860,6 +856,6 @@ a.card:hover .card__cta {
   }
 
   .pillar-numeral {
-    font-size: 88px;
+    font-size: 87px;
   }
 }
