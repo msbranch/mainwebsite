@@ -101,6 +101,22 @@
     </div>
   </section>
 
+  <!-- Mailing list -->
+  <section class="section section--white mail">
+    <div class="container">
+      <div class="mail-inner">
+        <span class="label label--dark reveal">The Mailing List</span>
+        <h2 class="headline reveal reveal--d1">Get the foundations in your <em>inbox</em>.</h2>
+        <p class="reveal reveal--d2">Join the list for straightforward guidance on protecting, growing, and passing on wealth — no jargon, no spam, just the next right step.</p>
+        <form id="mailForm" class="mail-form reveal reveal--d3" data-endpoint="#MAILING_LIST_WEBHOOK_URL" novalidate>
+          <input type="email" id="mailEmail" name="email" class="mail-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+          <button type="submit" class="btn btn--pill">Join the List</button>
+        </form>
+        <p id="mailMsg" class="mail-msg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="section section--black top-border cta">
     <div class="container">

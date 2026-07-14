@@ -638,6 +638,83 @@ a.card:hover .card__cta {
   margin-top: 38px;
 }
 
+/* ---------- Mailing list ---------- */
+
+.mail-inner {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mail-inner .headline {
+  max-width: 16ch;
+  margin: 0 auto;
+}
+
+.mail-inner p {
+  max-width: 520px;
+  margin: 22px auto 0;
+  color: var(--gray-text);
+}
+
+.mail-form {
+  display: flex;
+  gap: 12px;
+  margin: 34px auto 0;
+  max-width: 500px;
+}
+
+.mail-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--sans);
+  font-size: 16px;
+  color: var(--black);
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: 15px 22px;
+  transition: border-color 0.18s ease;
+}
+
+.mail-input::placeholder {
+  color: var(--gray-muted);
+}
+
+.mail-input:focus {
+  outline: none;
+  border-color: var(--lavender);
+}
+
+.mail-form .btn {
+  flex: 0 0 auto;
+}
+
+.mail-msg {
+  min-height: 1.4em;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mail-msg--ok {
+  color: #2f7d4f;
+}
+
+.mail-msg--error {
+  color: #b23b3b;
+}
+
+@media (max-width: 640px) {
+  .mail-form {
+    flex-direction: column;
+  }
+
+  .mail-form .btn {
+    width: 100%;
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .footer {
