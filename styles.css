@@ -147,7 +147,7 @@ p + p {
 
 /* Space between a headline and the body paragraph that follows it */
 .two-col .headline + p {
-  margin-top: 20px;
+  margin-top: 32px;
 }
 
 /* ---------- Sections ---------- */
