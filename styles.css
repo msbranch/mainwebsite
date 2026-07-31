@@ -106,6 +106,10 @@ img {
   color: var(--gray-text);
 }
 
+.label--black {
+  color: var(--black);
+}
+
 h1, h2, h3 {
   font-family: var(--serif);
   font-weight: 500;
