@@ -7,20 +7,36 @@ if (navToggle && navLinks) {
   });
 }
 
-// Mailing list signup — posts to a Zapier Catch Hook (later wired to GHL).
-// Replace the form's data-endpoint value (#MAILING_LIST_WEBHOOK_URL) with the
-// real Zapier "Catch Hook" URL to go live.
+// Mailing list signup — posts first_name + email to the GHL inbound webhook
+// (form's data-endpoint). Sent as application/x-www-form-urlencoded so GHL
+// maps the fields directly.
 const mailForm = document.getElementById('mailForm');
 if (mailForm) {
+  const nameInput = document.getElementById('mailName');
   const emailInput = document.getElementById('mailEmail');
+  const hpInput = document.getElementById('mailHp');
   const msg = document.getElementById('mailMsg');
   const submitBtn = mailForm.querySelector('button[type="submit"]');
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   mailForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    const firstName = (nameInput.value || '').trim();
     const email = (emailInput.value || '').trim();
 
+    // Honeypot: hidden field only bots fill. Silently accept without sending.
+    if (hpInput && hpInput.value) {
+      mailForm.reset();
+      msg.textContent = "You're on the list. Watch your inbox.";
+      msg.className = 'mail-msg mail-msg--ok';
+      return;
+    }
+
+    if (!firstName) {
+      msg.textContent = 'Please enter your first name.';
+      msg.className = 'mail-msg mail-msg--error';
+      return;
+    }
     if (!EMAIL_RE.test(email)) {
       msg.textContent = 'Please enter a valid email address.';
       msg.className = 'mail-msg mail-msg--error';
@@ -37,6 +53,7 @@ if (mailForm) {
           method: 'POST',
           mode: 'no-cors',
           body: new URLSearchParams({
+            first_name: firstName,
             email: email,
             source: 'morganbranch.co',
             submitted_at: new Date().toISOString()

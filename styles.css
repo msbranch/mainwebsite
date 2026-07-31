@@ -735,7 +735,17 @@ a.card:hover .card__cta {
   display: flex;
   gap: 12px;
   margin: 34px auto 0;
-  max-width: 500px;
+  max-width: 680px;
+}
+
+/* Honeypot: off-screen, not shown to real users */
+.mail-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .mail-input {
