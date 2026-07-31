@@ -576,6 +576,17 @@ a.card:hover .card__cta {
   gap: 22px;
 }
 
+/* Horizontal (3 across on desktop, stacks on mobile) */
+.stat-cards--row {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 640px) {
+  .stat-cards--row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .stat-card {
   border: 1px solid var(--border-light);
   padding: 32px;
