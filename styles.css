@@ -4,16 +4,18 @@
    ========================================================= */
 
 :root {
-  --black: #0a0a0a;
+  --black: #16161a;
   --white: #ffffff;
-  --off-white: #f7f6f4;
+  --off-white: #f6f6f9;
   --lavender: #C9B8E8;
+  --accent: #5b53c6;
+  --accent-hover: #4b44b0;
   --powder: #B8D4E8;
   --powder-deep: #5E93B8;
 
-  --gray-text: #6b6b6b;
-  --gray-muted: #9a9a9a;
-  --border-light: #e4e2de;
+  --gray-text: #6b6b73;
+  --gray-muted: #8a8a95;
+  --border-light: #e7e7ec;
   --border-dark: #262626;
 
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -51,6 +53,13 @@ a {
 img {
   max-width: 100%;
   display: block;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 .container {
@@ -92,12 +101,12 @@ img {
 /* ---------- Typography helpers ---------- */
 
 .label {
-  font-family: var(--sans);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--lavender);
+  color: var(--accent);
   margin-bottom: 22px;
   display: block;
 }
@@ -181,7 +190,7 @@ p + p {
 }
 
 .section--black .label {
-  color: var(--lavender);
+  color: var(--accent);
 }
 
 .top-border {
@@ -206,12 +215,13 @@ p + p {
 }
 
 .btn--pill {
-  background: var(--lavender);
-  color: var(--black);
+  background: var(--black);
+  color: var(--white);
+  border-radius: 6px;
 }
 
 .btn--pill:hover {
-  background: #b7a2dd;
+  background: #2a2a31;
 }
 
 .btn--ghost {
@@ -223,7 +233,7 @@ p + p {
 }
 
 .btn--ghost:hover {
-  color: var(--lavender);
+  color: var(--accent-hover);
 }
 
 .btn--outline {
@@ -243,7 +253,7 @@ p + p {
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
-  color: var(--lavender);
+  color: var(--accent);
   display: inline-block;
   transition: opacity 0.18s ease;
 }
@@ -333,18 +343,18 @@ p + p {
 
 .nav__links a.nav__cta {
   margin-top: 16px;
-  background: var(--lavender);
-  color: var(--black);
+  background: var(--black);
+  color: var(--white);
   padding: 13px 22px;
-  border-radius: 999px;
+  border-radius: 6px;
   font-weight: 600;
   text-align: center;
   border-bottom: none;
 }
 
 .nav__links a.nav__cta:hover {
-  background: #b7a2dd;
-  color: var(--black);
+  background: #2a2a31;
+  color: var(--white);
 }
 
 .nav__toggle {
@@ -411,6 +421,7 @@ p + p {
 /* Card is a full link */
 .card {
   border: 1px solid var(--border-light);
+  border-top: 3px solid var(--accent);
   padding: 38px 32px;
   display: flex;
   flex-direction: column;
@@ -422,7 +433,7 @@ p + p {
 }
 
 a.card:hover {
-  border-color: var(--lavender);
+  border-color: var(--accent);
   background: var(--off-white);
   transform: translateY(-3px);
 }
@@ -435,6 +446,7 @@ a.card:hover {
 .section--black .card {
   background: var(--white);
   border-color: var(--border-light);
+  border-top-color: var(--accent);
 }
 
 .section--black .card__title {
@@ -447,7 +459,7 @@ a.card:hover {
 
 .section--black a.card:hover {
   background: var(--off-white);
-  border-color: var(--lavender);
+  border-color: var(--accent);
 }
 
 .card--inactive {
@@ -462,7 +474,7 @@ a.card.card--inactive:hover {
   font-family: var(--serif);
   font-size: 16px;
   font-weight: 600;
-  color: var(--lavender);
+  color: var(--accent);
   letter-spacing: 0.04em;
   margin-bottom: 20px;
 }
@@ -488,7 +500,7 @@ a.card.card--inactive:hover {
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
-  color: var(--lavender);
+  color: var(--accent);
   transition: opacity 0.18s ease;
 }
 
@@ -630,7 +642,7 @@ a.card:hover .card__cta {
   font-family: var(--serif);
   font-size: 14px;
   font-weight: 600;
-  color: var(--lavender);
+  color: var(--accent);
   margin-bottom: 16px;
 }
 
@@ -651,7 +663,7 @@ a.card:hover .card__cta {
   align-items: center;
   justify-content: center;
   font-size: 23px;
-  color: var(--lavender);
+  color: var(--accent);
 }
 
 .framework-link {
@@ -693,7 +705,7 @@ a.card:hover .card__cta {
   letter-spacing: -0.01em;
   max-width: 22ch;
   margin: 0 auto;
-  color: var(--white);
+  color: #cfc9f5;
 }
 
 .quote__attr {
@@ -705,7 +717,7 @@ a.card:hover .card__cta {
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--lavender);
+  color: var(--accent);
 }
 
 /* ---------- Mailing list ---------- */
@@ -767,7 +779,7 @@ a.card:hover .card__cta {
 
 .mail-input:focus {
   outline: none;
-  border-color: var(--lavender);
+  border-color: var(--accent);
 }
 
 .mail-form .btn {
@@ -841,7 +853,7 @@ a.card:hover .card__cta {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--lavender);
+  color: var(--accent);
   margin-bottom: 18px;
 }
 
