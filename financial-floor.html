@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="floor.css?v=1" />
+  <link rel="stylesheet" href="floor.css?v=2" />
   <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
 </head>
 <body>
@@ -28,7 +28,7 @@
         <a href="index.html">Home</a>
         <a href="pillars.html">Building Blocks</a>
         <a href="about.html">About</a>
-        <a href="#FLOOR_APP_URL" class="signin">Private sign in</a>
+        <a href="#waitlist" class="signin">Join the waitlist</a>
       </div>
     </div>
   </nav>
@@ -40,12 +40,15 @@
       <div class="container">
         <div class="hero__grid">
           <div class="hero__copy">
-            <p class="kicker hero__kicker reveal">A Private Monthly Money Snapshot</p>
+            <div class="hero__eyebrow reveal">
+              <span class="kicker">A Private Monthly Money Snapshot</span>
+              <span class="badge">Coming soon</span>
+            </div>
             <h1 class="hero__title reveal reveal--d1">See what your money is <em class="italic-accent">doing.</em></h1>
             <p class="hero__body reveal reveal--d2">The Financial Floor turns the statement you already have into a clear monthly picture of actual income, fixed expenses, variable expenses, and what remains after the month.</p>
             <div class="hero__cta reveal reveal--d3">
-              <a href="#FLOOR_APP_URL" class="btn btn--dark">
-                Start my private snapshot
+              <a href="#waitlist" class="btn btn--dark">
+                Join the waitlist
                 <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </a>
               <span class="hero__trust">No bank connection. No cost. No judgment.</span>
@@ -116,7 +119,7 @@
           </div>
           <div class="reveal reveal--d1">
             <p class="privacy__body">You choose the PDFs you include. Your raw documents remain separate from the education layer. You can return to your saved history or delete it yourself.</p>
-            <a href="#FLOOR_APP_URL" class="privacy__link">
+            <a href="#PRIVACY_URL" class="privacy__link">
               How privacy works
               <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
@@ -125,17 +128,22 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section section--ink cta">
+    <!-- CTA / Waitlist -->
+    <section id="waitlist" class="section section--ink cta">
       <div class="container">
         <p class="kicker reveal">Begin with Clarity</p>
         <h2 class="cta__title reveal reveal--d1">Build your floor before you try to build <em>wealth.</em></h2>
-        <div class="reveal reveal--d2">
-          <a href="#FLOOR_APP_URL" class="btn btn--light">
-            Create private account
+        <p class="cta__sub reveal reveal--d2">The Financial Floor is opening soon. Join the waitlist and you'll be first to know when it's ready.</p>
+        <form id="waitlistForm" class="waitlist-form reveal reveal--d2" data-endpoint="#FLOOR_WAITLIST_URL" novalidate>
+          <input type="text" id="wlName" name="first_name" class="waitlist-input" placeholder="First name" aria-label="First name" autocomplete="given-name" required />
+          <input type="email" id="wlEmail" name="email" class="waitlist-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+          <input type="text" id="wlHp" name="website" class="waitlist-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="btn btn--light">
+            Join the waitlist
             <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
+          </button>
+        </form>
+        <p id="waitlistMsg" class="waitlist-msg" role="status" aria-live="polite"></p>
         <p class="cta__fine reveal reveal--d3">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
           Educational tool only. No product, investment, tax, legal, credit, or insurance recommendations.
@@ -178,6 +186,42 @@
         });
       }, { threshold: 0.12 });
       els.forEach(function (e) { io.observe(e); });
+    })();
+    // Waitlist form
+    (function () {
+      var form = document.getElementById('waitlistForm');
+      if (!form) return;
+      var msg = document.getElementById('waitlistMsg');
+      var name = document.getElementById('wlName');
+      var email = document.getElementById('wlEmail');
+      var hp = document.getElementById('wlHp');
+      var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      function say(t, ok) { if (msg) { msg.textContent = t; msg.style.color = ok ? '' : '#e6b8b8'; } }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (hp && hp.value) return;                 // honeypot: silently drop bots
+        var n = (name.value || '').trim();
+        var em = (email.value || '').trim();
+        if (!n) { say('Please add your first name.', false); name.focus(); return; }
+        if (!re.test(em)) { say('Please enter a valid email address.', false); email.focus(); return; }
+        var endpoint = form.getAttribute('data-endpoint') || '';
+        var done = function () {
+          form.reset();
+          say("You're on the list. We'll be in touch when the Financial Floor opens.", true);
+        };
+        if (endpoint && endpoint.charAt(0) !== '#') {
+          var body = new URLSearchParams();
+          body.append('first_name', n);
+          body.append('email', em);
+          body.append('source', 'financial-floor-waitlist');
+          fetch(endpoint, { method: 'POST', mode: 'no-cors', body: body })
+            .then(done)['catch'](function () {
+              say('Something went wrong. Please try again in a moment.', false);
+            });
+        } else {
+          done();   // no endpoint wired yet — confirm locally
+        }
+      });
     })();
   </script>
 </body>
