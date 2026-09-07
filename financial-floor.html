@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Financial Floor — Morgan Branch the Broker</title>
+  <meta name="description" content="The Financial Floor turns the bank statement you already have into a clear monthly picture of your income, fixed expenses, variable expenses, and what remains. No bank connection. No cost. No judgment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=10" />
+  <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Morgan Branch <em>the Broker</em></a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="financial-floor.html">The Financial Floor</a>
+        <a href="pillars.html">Building Blocks</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page hero -->
+  <header class="page-hero">
+    <div class="container">
+      <span class="label reveal">The Financial Floor</span>
+      <h1 class="display reveal reveal--d1">See what your money is <em>doing</em>.</h1>
+      <p class="subtext reveal reveal--d2">The Financial Floor turns the bank statement you already have into a clear monthly picture of your income, fixed expenses, variable expenses, and what remains after the month.</p>
+      <p class="trust-line reveal reveal--d3">No bank connection. &nbsp;No cost. &nbsp;No judgment.</p>
+      <div class="btn-row reveal reveal--d3">
+        <a href="#waitlist" class="btn btn--pill">Start My Monthly Snapshot</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- How it works -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-head">
+        <span class="label label--dark reveal">How It Works</span>
+        <h2 class="headline reveal reveal--d1">One month. One clear <em>picture</em>.</h2>
+      </div>
+      <div class="floor-steps">
+        <div class="floor-step reveal reveal--d1">
+          <div class="floor-step__num">1</div>
+          <h3 class="floor-step__title">Report your income</h3>
+          <p class="floor-step__body">Tell us your actual take-home income for the month you want to look at.</p>
+        </div>
+        <div class="floor-step reveal reveal--d2">
+          <div class="floor-step__num">2</div>
+          <h3 class="floor-step__title">Add your statements</h3>
+          <p class="floor-step__body">Upload the bank and credit-card statements you choose to include. No bank login — ever.</p>
+        </div>
+        <div class="floor-step reveal reveal--d3">
+          <div class="floor-step__num">3</div>
+          <h3 class="floor-step__title">See it sorted</h3>
+          <p class="floor-step__body">Your spending is separated into fixed and variable — the bills that repeat and the ones that move.</p>
+        </div>
+        <div class="floor-step reveal reveal--d4">
+          <div class="floor-step__num">4</div>
+          <h3 class="floor-step__title">Read your floor</h3>
+          <p class="floor-step__body">You get your Net Income and your Net-Income Margin for the month, in plain numbers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The math -->
+  <section class="section section--black">
+    <div class="container">
+      <div class="section-head">
+        <span class="label reveal">The Math</span>
+        <h2 class="headline reveal reveal--d1">Simple on purpose.</h2>
+        <p class="subtext reveal reveal--d2">Two calculations tell you where the month actually landed — nothing hidden, nothing you can't check yourself.</p>
+      </div>
+      <div class="formulas">
+        <div class="formula reveal reveal--d1">
+          <span class="formula__label">Net Income</span>
+          <span class="formula__eq">Actual Income &minus; Fixed Expenses &minus; Variable Expenses</span>
+        </div>
+        <div class="formula reveal reveal--d2">
+          <span class="formula__label">Net-Income Margin</span>
+          <span class="formula__eq">( Net Income &divide; Actual Income ) &times; 100</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What your result means -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-head">
+        <span class="label label--dark reveal">Your Result</span>
+        <h2 class="headline reveal reveal--d1">Four ways a month can <em>land</em>.</h2>
+      </div>
+      <div class="results">
+        <div class="result reveal reveal--d1">
+          <span class="result__chip result__chip--red">In the Red</span>
+          <p class="result__body">More went out than came in this month. The floor shows exactly where.</p>
+        </div>
+        <div class="result reveal reveal--d2">
+          <span class="result__chip result__chip--black">In the Black</span>
+          <p class="result__body">You broke even or held a thin margin. Steady, but little room to build yet.</p>
+        </div>
+        <div class="result reveal reveal--d3">
+          <span class="result__chip result__chip--green">In the Green</span>
+          <p class="result__body">Real margin remained after the month — money with a job still to be given.</p>
+        </div>
+        <div class="result reveal reveal--d4">
+          <span class="result__chip result__chip--review">Needs Review</span>
+          <p class="result__body">The month isn't clear-cut. We flag what to look at before you decide.</p>
+        </div>
+      </div>
+      <p class="results-note reveal">From there, The Financial Floor points you toward the building block that fits where you are — <a href="pillars.html#protection">Protection</a>, <a href="pillars.html#accumulation">Accumulation</a>, or <a href="pillars.html#distribution">Distribution</a>.</p>
+    </div>
+  </section>
+
+  <!-- Reassurance -->
+  <section class="section section--black">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="label reveal">Your Data, Your Call</span>
+        <h2 class="headline reveal reveal--d1">No bank connection. No cost. No <em>judgment</em>.</h2>
+      </div>
+      <p class="reassure reveal reveal--d2">You decide which statements to share — nothing is pulled from your bank, and nothing is sold or shared. The Financial Floor is built to help you see clearly, not to sell you or score you. It is education, not a credit check and not a sales funnel.</p>
+    </div>
+  </section>
+
+  <!-- Waitlist -->
+  <section id="waitlist" class="section section--white mail">
+    <div class="container">
+      <div class="mail-inner">
+        <span class="label label--black reveal">Launching Soon</span>
+        <h2 class="headline reveal reveal--d1">Be first on The Financial <em>Floor</em>.</h2>
+        <p class="reveal reveal--d1">The tool is being built now. Join the waitlist and we'll email you the moment your monthly snapshot is ready.</p>
+        <form id="mailForm" class="mail-form reveal reveal--d2" data-endpoint="#FLOOR_WAITLIST_URL" novalidate>
+          <input type="text" id="mailName" name="first_name" class="mail-input" placeholder="First name" aria-label="First name" autocomplete="given-name" required />
+          <input type="email" id="mailEmail" name="email" class="mail-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+          <input type="text" id="mailHp" name="website" class="mail-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="btn btn--pill">Join the Waitlist</button>
+        </form>
+        <p id="mailMsg" class="mail-msg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <div class="footer__logo">Morgan Branch <em>the Broker</em></div>
+          <p class="footer__tag">Where your money meets your purpose.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#INSTAGRAM_URL">Instagram</a></li>
+            <li><a href="#TIKTOK_URL">TikTok</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#PRIVACY_URL">Privacy Policy</a></li>
+            <li><a href="#TERMS_URL">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer__disclaimer">© 2026 Morgan Branch Enterprises LLC. All rights reserved. Information provided is for educational purposes only and does not constitute specific tax, legal, or investment advice. The Financial Floor is an educational tool and does not provide financial, tax, or investment advice.</p>
+    </div>
+  </footer>
+
+  <script src="main.js?v=10"></script>
+</body>
+</html>
