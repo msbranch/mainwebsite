@@ -604,3 +604,8 @@ em { font-style: italic; }
   .step:last-child { border-bottom: 0; }
   .hero__cta { align-items: flex-start; }
 }
+
+/* prototype preview link (hero) */
+.hero__preview { margin: 16px 0 0; font-size: 14px; }
+.hero__preview a { color: var(--violet); text-decoration: none; border-bottom: 1px solid transparent; font-weight: 500; }
+.hero__preview a:hover { border-bottom-color: var(--violet); }
