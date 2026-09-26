@@ -1430,9 +1430,15 @@ a.card:hover .card__cta {
   max-width: 44ch;
 }
 
-.mail-two__left .textlink,
-.mail-two__left .btn {
+.mail-two__left .textlink {
   margin-top: 26px;
+}
+
+/* Financial Floor secondary CTA — centered within its column */
+.mail-two__left .btn {
+  display: block;
+  width: fit-content;
+  margin: 26px auto 0;
 }
 
 .mail-two__right {
@@ -1487,12 +1493,16 @@ a.card:hover .card__cta {
   line-height: 1.7;
   color: #9a9aa2;
   max-width: 100%;
+  text-align: center;
 }
 
+/* Only the homepage footer has a .footer__disclosure before the copyright line,
+   so this centers the homepage disclaimers without touching other pages. */
 .footer__disclosure + .footer__disclaimer {
   border-top: none;
   margin-top: 16px;
   padding-top: 0;
+  text-align: center;
 }
 
 /* ---------- Homepage responsive ---------- */
