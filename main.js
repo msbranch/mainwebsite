@@ -11,12 +11,10 @@ if (navToggle && navLinks) {
   });
 }
 
-// Protection Assessment destination — the single place to update when a real
-// assessment exists. Leave empty to keep every "Explore the Protection
-// Assessment" link scrolling to the on-page "How Protection Starts Here"
-// section (never a dead link). Set to a full URL (e.g. "https://…") to point
-// all such links there.
-const PROTECTION_ASSESSMENT_URL = '';
+// Protection Assessment destination — the single place to update. Points every
+// "Explore the Protection Assessment" link at the assessment page. Set to a full
+// URL later if the assessment ever moves to its own host.
+const PROTECTION_ASSESSMENT_URL = 'protection-assessment.html';
 if (PROTECTION_ASSESSMENT_URL) {
   document.querySelectorAll('[data-assessment-link]').forEach(link => {
     link.setAttribute('href', PROTECTION_ASSESSMENT_URL);
