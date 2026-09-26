@@ -102,6 +102,7 @@ button:focus-visible {
 .reveal--d2 { transition-delay: 0.16s; }
 .reveal--d3 { transition-delay: 0.24s; }
 .reveal--d4 { transition-delay: 0.32s; }
+.reveal--d5 { transition-delay: 0.40s; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
@@ -680,7 +681,8 @@ a.card:hover .card__cta {
 }
 
 @media (max-width: 640px) {
-  .stat-cards--row {
+  .stat-cards--row,
+  .stat-cards--pair {
     grid-template-columns: 1fr;
   }
 }
@@ -1201,6 +1203,13 @@ a.card:hover .card__cta {
   max-width: 15ch;
 }
 
+/* Hero supporting copy: one step smaller for breathing room; never below 16px. */
+.hero--home .subtext {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
 .hero__subtext-2 {
   margin-top: 18px;
 }
@@ -1261,6 +1270,18 @@ a.card:hover .card__cta {
   background: var(--powder);
 }
 
+/* Secondary button — powder-blue fill, black text. Quieter than the lavender
+   primary CTA so Financial Floor stays subordinate to the Protection Assessment. */
+.btn--powder {
+  background: var(--powder);
+  color: var(--black);
+  border-radius: 6px;
+}
+
+.btn--powder:hover {
+  background: var(--pow-2);
+}
+
 /* ---------- Responsibility Ledger ---------- */
 
 .ledger {
@@ -1272,7 +1293,7 @@ a.card:hover .card__cta {
   grid-template-columns: auto 1fr;
   align-items: baseline;
   gap: 22px;
-  padding: 22px 4px;
+  padding: 19px 4px;
   border-bottom: 1px solid rgba(201, 184, 232, 0.28);
 }
 
@@ -1322,6 +1343,23 @@ a.card:hover .card__cta {
   font-size: 1.0575rem;
   line-height: 1.65;
   color: var(--body-soft);
+}
+
+/* Supporting line under the "The Question" headline */
+.q-sub {
+  max-width: 46ch;
+  margin: 16px auto 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--body-soft);
+}
+
+/* Second responsibility row: two wider, balanced cards centered in the grid */
+.stat-cards--pair {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 764px;
+  margin: 22px auto 0;
 }
 
 /* ---------- How it works: process cards ---------- */
@@ -1392,7 +1430,8 @@ a.card:hover .card__cta {
   max-width: 44ch;
 }
 
-.mail-two__left .textlink {
+.mail-two__left .textlink,
+.mail-two__left .btn {
   margin-top: 26px;
 }
 
