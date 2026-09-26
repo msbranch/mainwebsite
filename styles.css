@@ -26,6 +26,11 @@
   --border-light: #e7e7ec;
   --border-dark: #262626;
 
+  /* Brand accent tokens — restrained lavender + powder blue, used for small
+     accents (Responsibility Ledger rows, process-card hover rule). */
+  --lav-2: #C9B8E8;
+  --pow-2: #B8D4E8;
+
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
@@ -1166,5 +1171,325 @@ a.card:hover .card__cta {
   .floor-steps,
   .results {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Homepage revision — hero grid, Responsibility Ledger,
+   process-card hover rule, and two-column Floor + mail block.
+   Scoped classes; existing pages are unaffected.
+   ========================================================= */
+
+/* ---------- Home hero: text + Responsibility Ledger ---------- */
+
+.hero--home {
+  padding: 56px 0 60px;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero--home .label {
+  line-height: 1.7;
+}
+
+.hero--home .display {
+  max-width: 15ch;
+}
+
+.hero__subtext-2 {
+  margin-top: 18px;
+}
+
+.hero__cta-row {
+  margin-top: 34px;
+}
+
+.hero__support {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-body);
+  opacity: 0.72;
+  max-width: 46ch;
+}
+
+.hero__foot {
+  margin-top: 34px;
+}
+
+.hero__rule {
+  display: block;
+  width: 54px;
+  height: 1px;
+  background: var(--lav-2);
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+
+.hero__note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--ink-emph);
+  max-width: 34ch;
+}
+
+/* Arrow-shift CTA (a few pixels right on hover) */
+.cta-arrow .arw {
+  display: inline-block;
+  transition: transform 0.18s ease;
+}
+
+.cta-arrow:hover .arw,
+.cta-arrow:focus-visible .arw {
+  transform: translateX(4px);
+}
+
+/* Lavender pill on the dark hero */
+.hero--home .btn--pill {
+  background: var(--lavender);
+  color: var(--black);
+}
+
+.hero--home .btn--pill:hover {
+  background: var(--powder);
+}
+
+/* ---------- Responsibility Ledger ---------- */
+
+.ledger {
+  border-top: 1px solid rgba(201, 184, 232, 0.28);
+}
+
+.ledger__row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 22px;
+  padding: 22px 4px;
+  border-bottom: 1px solid rgba(201, 184, 232, 0.28);
+}
+
+.ledger__num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--pow-2);
+}
+
+.ledger__text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ledger__label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lav-2);
+}
+
+.ledger__desc {
+  font-family: var(--serif);
+  font-size: 1.22rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-heading);
+}
+
+/* ---------- The Question: responsibility cards ---------- */
+
+.stat-card__p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--body-soft);
+}
+
+.section-note {
+  max-width: 640px;
+  margin: 36px auto 0;
+  text-align: center;
+  font-size: 1.0575rem;
+  line-height: 1.65;
+  color: var(--body-soft);
+}
+
+/* ---------- How it works: process cards ---------- */
+
+.card.proc {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+/* A thin lavender rule reveals on hover/focus-within */
+.card.proc::after {
+  content: "";
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 0;
+  height: 2px;
+  background: var(--lav-2);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+.card.proc:hover,
+.card.proc:focus-within {
+  background: var(--edge-light);
+  border-color: var(--edge);
+  transform: translateY(-2px);
+}
+
+.card.proc:hover::after,
+.card.proc:focus-within::after {
+  transform: scaleX(1);
+}
+
+.proc-note {
+  margin-top: 34px;
+  max-width: 620px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-body);
+  opacity: 0.82;
+}
+
+.section--black .center-link {
+  text-align: left;
+  margin-top: 26px;
+}
+
+/* ---------- Financial Floor + mailing two-column ---------- */
+
+.mail-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.mail-two__left .headline {
+  margin-top: 18px;
+  max-width: 18ch;
+}
+
+.mail-two__left p {
+  margin-top: 20px;
+  max-width: 44ch;
+}
+
+.mail-two__left .textlink {
+  margin-top: 26px;
+}
+
+.mail-two__right {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 34px 32px;
+  background: var(--off-white);
+}
+
+.mail-two__right .label {
+  margin-bottom: 14px;
+}
+
+.mail-two__lead {
+  font-family: var(--serif);
+  font-size: 1.16rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--black);
+  max-width: 30ch;
+}
+
+/* Stacked form (full-width fields) inside the narrower right column */
+.mail-form--stack {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  margin: 24px 0 0;
+  max-width: 100%;
+}
+
+.mail-form--stack .mail-input {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.mail-form--stack .btn {
+  width: 100%;
+}
+
+.mail-two__right .mail-msg {
+  text-align: left;
+}
+
+/* ---------- Footer disclosure ---------- */
+
+.footer__disclosure {
+  border-top: 1px solid var(--border-dark);
+  margin-top: 56px;
+  padding-top: 30px;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #9a9aa2;
+  max-width: 100%;
+}
+
+.footer__disclosure + .footer__disclaimer {
+  border-top: none;
+  margin-top: 16px;
+  padding-top: 0;
+}
+
+/* ---------- Homepage responsive ---------- */
+
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Keep hero text first; Ledger moves below as a compact full-width block */
+  .hero--home .display {
+    max-width: 18ch;
+  }
+
+  .mail-two {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero--home {
+    padding: 40px 0 44px;
+  }
+
+  .ledger__row {
+    gap: 16px;
+    padding: 18px 2px;
+  }
+
+  .ledger__desc {
+    font-size: 1.1rem;
+  }
+
+  .mail-two__right {
+    padding: 28px 22px;
   }
 }

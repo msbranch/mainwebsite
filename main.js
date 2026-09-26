@@ -1,9 +1,25 @@
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 if (navToggle && navLinks) {
-  navToggle.addEventListener('click', () => { navLinks.classList.toggle('open'); });
+  const setOpen = (open) => {
+    navLinks.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  navToggle.addEventListener('click', () => setOpen(!navLinks.classList.contains('open')));
   navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
+    link.addEventListener('click', () => setOpen(false));
+  });
+}
+
+// Protection Assessment destination — the single place to update when a real
+// assessment exists. Leave empty to keep every "Explore the Protection
+// Assessment" link scrolling to the on-page "How Protection Starts Here"
+// section (never a dead link). Set to a full URL (e.g. "https://…") to point
+// all such links there.
+const PROTECTION_ASSESSMENT_URL = '';
+if (PROTECTION_ASSESSMENT_URL) {
+  document.querySelectorAll('[data-assessment-link]').forEach(link => {
+    link.setAttribute('href', PROTECTION_ASSESSMENT_URL);
   });
 }
 
