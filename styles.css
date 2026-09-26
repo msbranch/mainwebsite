@@ -1541,4 +1541,10 @@ a.card:hover .card__cta {
   .mail-two__right {
     padding: 28px 22px;
   }
+
+  /* "The Question" cards stack vertically on mobile (this rule sits after the
+     .stat-cards--pair base declaration, so it wins on source order at <=640px). */
+  .stat-cards--pair {
+    grid-template-columns: 1fr;
+  }
 }
