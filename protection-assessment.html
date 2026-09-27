@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Protection Assessment — Morgan Branch the Broker</title>
-  <meta name="description" content="A private, guided starting point to name the responsibilities connected to your income and understand which life-insurance direction may be worth exploring. Educational only — no quote, coverage amount, or approval." />
+  <meta name="description" content="A private, guided starting point to name the responsibilities connected to your income and understand which protection direction may be worth exploring. Educational only — no quote, coverage amount, or approval." />
   <meta name="robots" content="noindex" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assessment.css?v=1" />
+  <link rel="stylesheet" href="assessment.css?v=2" />
   <noscript><style>.ascreen{display:block !important;position:static !important;animation:none !important}.aprogress{display:none !important}</style></noscript>
 </head>
 <body>
@@ -20,12 +20,12 @@
     <a class="abar__exit" href="index.html">Exit assessment</a>
   </header>
 
-  <!-- Progress (shown only during the seven question steps) -->
+  <!-- Progress (shown only during the eight question steps; the Result Gate is NOT a question) -->
   <div class="aprogress" id="aprogress" hidden aria-hidden="true">
-    <div class="aprogress__track" id="aprogressTrack" role="progressbar" aria-label="Assessment progress" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1">
-      <span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span>
+    <div class="aprogress__track" id="aprogressTrack" role="progressbar" aria-label="Assessment progress" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1">
+      <span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span><span class="aseg"></span>
     </div>
-    <span class="aprogress__label" id="aprogressLabel">Step 1 of 7</span>
+    <span class="aprogress__label" id="aprogressLabel">Question 1 of 8</span>
   </div>
 
   <main class="astage" id="astage">
@@ -35,7 +35,7 @@
       <div class="ascreen__inner ascreen__inner--center">
         <p class="aeyebrow">The Protection Assessment</p>
         <h1 class="atitle">What does your income <em>carry</em>?</h1>
-        <p class="alead">A private starting point to help name the responsibilities connected to your income and understand which life-insurance direction may be worth exploring.</p>
+        <p class="alead">A private starting point to help name the responsibilities connected to your income and understand which protection direction may be worth exploring.</p>
         <ul class="adetail" aria-label="What to expect">
           <li>About 3 minutes</li>
           <li>Educational only</li>
@@ -44,18 +44,187 @@
         <div class="acontrols acontrols--center">
           <button class="abtn abtn--primary" data-nav="next">Begin the Assessment <span class="arw" aria-hidden="true">→</span></button>
         </div>
-        <p class="afine">Your answers stay within this assessment experience. This is educational and does not provide a final policy recommendation, coverage amount, approval, or quote.</p>
+        <p class="afine">Your answers are used to create an immediate educational Protection Direction. This assessment does not provide a final policy recommendation, coverage amount, quote, approval, or eligibility decision.</p>
       </div>
     </section>
 
-    <!-- ============ LEAD CAPTURE ============ -->
-    <section class="ascreen" id="s-lead" data-dir="fwd" tabindex="-1" aria-label="Before we begin">
+    <!-- ============ QUESTION 1 — Age band (single) ============ -->
+    <section class="ascreen" id="s-q1" data-step="1" data-select="single" data-answer="ageBand" data-dir="fwd" tabindex="-1">
       <div class="ascreen__inner">
-        <p class="aeyebrow">Before we begin</p>
-        <h2 class="atitle atitle--sm">Let’s make your starting point <em>personal</em>.</h2>
-        <p class="alead">Your answers will shape a personalized Protection Direction and help Morgan explain why certain life-insurance categories may be worth exploring.</p>
+        <h2 class="aquestion">What age range are you in?</h2>
+        <div class="acards" role="group" aria-label="Your age range — choose one" data-answer="ageBand">
+          <button type="button" class="acard" data-value="18–29"><span class="acard__label">18–29</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="30–39"><span class="acard__label">30–39</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="40–49"><span class="acard__label">40–49</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="50–59"><span class="acard__label">50–59</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="60+"><span class="acard__label">60+</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Prefer not to say"><span class="acard__label">Prefer not to say</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
 
-        <form class="aform" id="leadForm" novalidate>
+    <!-- ============ QUESTION 2 — Income-carrying themes (multi) ============ -->
+    <section class="ascreen" id="s-q2" data-step="2" data-select="multi" data-answer="incomeCarryingThemes" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">What parts of life are connected to your income right now?</h2>
+        <p class="asupport">Select all that apply.</p>
+        <div class="acards acards--stack" role="group" aria-label="Parts of life connected to your income — choose all that apply" data-answer="incomeCarryingThemes">
+          <button type="button" class="acard" data-value="My own household and everyday life"><span class="acard__label">My own household and everyday life</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A partner or spouse"><span class="acard__label">A partner or spouse</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Children or future children"><span class="acard__label">Children or future children</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Parents or family members"><span class="acard__label">Parents or family members</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A home or housing responsibility"><span class="acard__label">A home or housing responsibility</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Debt or a financial obligation"><span class="acard__label">Debt or a financial obligation</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A business, side income, or people connected to my work"><span class="acard__label">A business, side income, or people connected to my work</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="An asset I want to keep or pass on"><span class="acard__label">An asset I want to keep or pass on</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A future goal, legacy, or opportunity"><span class="acard__label">A future goal, legacy, or opportunity</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I am planning ahead before these things become active"><span class="acard__label">I am planning ahead before these things become active</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 3 — Impact themes (multi) ============ -->
+    <section class="ascreen" id="s-q3" data-step="3" data-select="multi" data-answer="impactThemes" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">If your income were no longer available, who or what could feel the impact?</h2>
+        <p class="asupport">Select all that apply.</p>
+        <div class="acards acards--stack" role="group" aria-label="Who or what could feel the impact — choose all that apply" data-answer="impactThemes">
+          <button type="button" class="acard" data-value="My partner or spouse"><span class="acard__label">My partner or spouse</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="My children"><span class="acard__label">My children</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="My parents or family"><span class="acard__label">My parents or family</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="My household"><span class="acard__label">My household</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="My business or work responsibilities"><span class="acard__label">My business or work responsibilities</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A home or other asset"><span class="acard__label">A home or other asset</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Debt connected to me"><span class="acard__label">Debt connected to me</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A future plan or legacy I want to leave behind"><span class="acard__label">A future plan or legacy I want to leave behind</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I am not sure yet"><span class="acard__label">I am not sure yet</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 4 — Priority order (rank up to 3) ============ -->
+    <section class="ascreen" id="s-q4" data-step="4" data-select="rank" data-answer="priorityOrder" data-max="3" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">If your income were no longer available, what would you want handled first?</h2>
+        <p class="asupport">Choose up to three and place them in order.</p>
+        <div class="acards acards--stack" role="group" aria-label="What to handle first — choose up to three, in order" data-answer="priorityOrder">
+          <button type="button" class="acard" data-value="Keep the household stable"><span class="acard__label">Keep the household stable</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Protect the home or housing payment"><span class="acard__label">Protect the home or housing payment</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Make sure children are supported"><span class="acard__label">Make sure children are supported</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Support a partner or spouse"><span class="acard__label">Support a partner or spouse</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Avoid leaving debt for someone else"><span class="acard__label">Avoid leaving debt for someone else</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Continue support for parents or family"><span class="acard__label">Continue support for parents or family</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Protect business or work responsibilities"><span class="acard__label">Protect business or work responsibilities</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Protect an asset I have built or want to pass on"><span class="acard__label">Protect an asset I have built or want to pass on</span><span class="acard__rank" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Leave room for a future goal, legacy, or opportunity"><span class="acard__label">Leave room for a future goal, legacy, or opportunity</span><span class="acard__rank" aria-hidden="true"></span></button>
+        </div>
+        <div class="arank" id="rankPanel" hidden>
+          <p class="arank__label">Your order — most important first</p>
+          <ol class="arank__list" id="rankList"></ol>
+        </div>
+        <p class="afine afine--left">This identifies what should lead the protection conversation. It does not determine whose life should be insured or create a product recommendation.</p>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 5 — Timeline (single) ============ -->
+    <section class="ascreen" id="s-q5" data-step="5" data-select="single" data-answer="timeHorizon" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">When you think about the responsibilities at the top of your list, what timing feels most true?</h2>
+        <div class="acards acards--stack" role="group" aria-label="Timing that feels most true — choose one" data-answer="timeHorizon">
+          <button type="button" class="acard" data-value="Most have a defined ending point"><span class="acard__label">Most have a defined ending point</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Most will likely matter for a long time"><span class="acard__label">Most will likely matter for a long time</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I have both short-term and long-term responsibilities"><span class="acard__label">I have both short-term and long-term responsibilities</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I am still figuring that out"><span class="acard__label">I am still figuring that out</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 6 — Existing coverage (single) ============ -->
+    <section class="ascreen" id="s-q6" data-step="6" data-select="single" data-answer="existingCoverageStatus" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">Where do you honestly stand with life insurance today?</h2>
+        <div class="acards acards--stack" role="group" aria-label="Where you stand with life insurance — choose one" data-answer="existingCoverageStatus">
+          <button type="button" class="acard" data-value="I do not have life insurance yet"><span class="acard__label">I do not have life insurance yet</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I have coverage through work only"><span class="acard__label">I have coverage through work only</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I have personal coverage"><span class="acard__label">I have personal coverage</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I have both work and personal coverage"><span class="acard__label">I have both work and personal coverage</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I have coverage, but I am not sure what it does"><span class="acard__label">I have coverage, but I am not sure what it does</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="I am not sure whether I have coverage"><span class="acard__label">I am not sure whether I have coverage</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 7 — Income pattern (single) ============ -->
+    <section class="ascreen" id="s-q7" data-step="7" data-select="single" data-answer="incomePattern" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">Which best describes your income right now?</h2>
+        <div class="acards acards--stack" role="group" aria-label="What best describes your income — choose one" data-answer="incomePattern">
+          <button type="button" class="acard" data-value="Mostly steady employment income"><span class="acard__label">Mostly steady employment income</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A mix of steady and variable income"><span class="acard__label">A mix of steady and variable income</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Self-employed, freelance, contract, or commission income"><span class="acard__label">Self-employed, freelance, contract, or commission income</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Business-owner income"><span class="acard__label">Business-owner income</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="A transition period or changing income"><span class="acard__label">A transition period or changing income</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Prefer not to say"><span class="acard__label">Prefer not to say</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUESTION 8 — Desired clarity (multi, up to 2) ============ -->
+    <section class="ascreen" id="s-q8" data-step="8" data-select="multi" data-answer="educationPriorities" data-max="2" data-dir="fwd" tabindex="-1">
+      <div class="ascreen__inner">
+        <h2 class="aquestion">What would you like more clarity on first?</h2>
+        <p class="asupport">Choose up to two.</p>
+        <div class="acards acards--stack" role="group" aria-label="What you would like more clarity on — choose up to two" data-answer="educationPriorities">
+          <button type="button" class="acard" data-value="How to protect responsibilities for a defined period"><span class="acard__label">How to protect responsibilities for a defined period</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="How to keep the monthly cost manageable"><span class="acard__label">How to keep the monthly cost manageable</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="How longer-term or permanent protection works"><span class="acard__label">How longer-term or permanent protection works</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="How cash-value life insurance works"><span class="acard__label">How cash-value life insurance works</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="Whether my current coverage should be reviewed"><span class="acard__label">Whether my current coverage should be reviewed</span><span class="acard__mark" aria-hidden="true"></span></button>
+          <button type="button" class="acard" data-value="How to begin without getting overwhelmed"><span class="acard__label">How to begin without getting overwhelmed</span><span class="acard__mark" aria-hidden="true"></span></button>
+        </div>
+        <div class="acontrols">
+          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
+          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>See my result <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESULT GATE (repurposed contact form) ============ -->
+    <section class="ascreen" id="s-gate" data-dir="fwd" tabindex="-1" aria-label="Your Protection Direction is ready">
+      <div class="ascreen__inner">
+        <p class="aeyebrow">Your Protection Direction</p>
+        <h2 class="atitle atitle--sm">Your Protection Direction is <em>ready</em>.</h2>
+        <p class="alead">Add your name and email to view the result built from what you shared.</p>
+
+        <form class="aform" id="gateForm" novalidate>
           <div class="afield-row">
             <div class="afield">
               <label for="fName">First name</label>
@@ -70,177 +239,23 @@
             <label for="fEmail">Email address</label>
             <input type="email" id="fEmail" name="email" autocomplete="email" inputmode="email" required />
           </div>
-          <div class="afield">
-            <label for="fAge">Age range</label>
-            <div class="aselectwrap">
-              <select id="fAge" name="ageRange" required>
-                <option value="" selected disabled>Select an age range…</option>
-                <option>18–24</option>
-                <option>25–34</option>
-                <option>35–44</option>
-                <option>45–54</option>
-                <option>55–64</option>
-                <option>65+</option>
-                <option>Prefer not to say</option>
-              </select>
-            </div>
-          </div>
 
           <label class="acheck acheck--req">
             <input type="checkbox" id="ackReq" required />
-            <span>I understand that my Protection Direction will be sent to this email.</span>
+            <span>I understand this assessment provides general educational direction only. It is not a quote, insurance application, coverage recommendation, or guarantee of eligibility or approval.</span>
           </label>
           <label class="acheck">
             <input type="checkbox" id="optMarketing" />
-            <span>Send me ongoing plain-English protection and money-clarity education.</span>
+            <span>Send me occasional plain-English education from Morgan Branch the Broker about protection and financial clarity.</span>
           </label>
 
-          <p class="afine afine--left">By continuing, you agree to the <a href="#PRIVACY_URL">Privacy Policy</a> and understand this assessment does not provide a final policy recommendation, coverage amount, premium, eligibility decision, or insurance approval.</p>
+          <p class="afine afine--left">By continuing, you agree to the Privacy Policy and understand this assessment does not provide a final policy recommendation, coverage amount, premium, eligibility decision, or insurance approval.</p>
 
           <div class="acontrols">
             <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-            <button type="submit" class="abtn abtn--primary" id="leadContinue" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
+            <button type="submit" class="abtn abtn--primary" id="gateContinue" disabled>View My Protection Direction <span class="arw" aria-hidden="true">→</span></button>
           </div>
         </form>
-      </div>
-    </section>
-
-    <!-- ============ STEP 1 (multi-select) ============ -->
-    <section class="ascreen" id="s-q1" data-step="1" data-select="multi" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">What does your income currently help carry?</h2>
-        <p class="asupport">Choose every responsibility that feels connected to your income.</p>
-        <div class="acards" role="group" aria-label="What your income helps carry — choose all that apply" data-answer="q1">
-          <button type="button" class="acard" data-value="Home"><span class="acard__label">Home</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="People"><span class="acard__label">People</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Work"><span class="acard__label">Work</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Future"><span class="acard__label">Future</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Assets"><span class="acard__label">Assets</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 2 ============ -->
-    <section class="ascreen" id="s-q2" data-step="2" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">Who could feel the impact if your income changed?</h2>
-        <div class="acards" role="group" aria-label="Who could feel the impact — choose one" data-answer="q2">
-          <button type="button" class="acard" data-value="Just me"><span class="acard__label">Just me</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="A partner or spouse"><span class="acard__label">A partner or spouse</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Children"><span class="acard__label">Children</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Parents or family"><span class="acard__label">Parents or family</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Business partners, employees, or clients"><span class="acard__label">Business partners, employees, or clients</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="More than one of these"><span class="acard__label">More than one of these</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 3 ============ -->
-    <section class="ascreen" id="s-q3" data-step="3" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">How long do you expect these responsibilities to matter?</h2>
-        <div class="acards" role="group" aria-label="How long these responsibilities matter — choose one" data-answer="q3">
-          <button type="button" class="acard" data-value="For a defined period of time"><span class="acard__label">For a defined period of time</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="For as long as people rely on me"><span class="acard__label">For as long as people rely on me</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="For both a temporary and long-term reason"><span class="acard__label">For both a temporary and long-term reason</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I am not sure yet"><span class="acard__label">I am not sure yet</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 4 ============ -->
-    <section class="ascreen" id="s-q4" data-step="4" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">What is already in place, if anything?</h2>
-        <div class="acards" role="group" aria-label="What is already in place — choose one" data-answer="q4">
-          <button type="button" class="acard" data-value="I have individual life insurance"><span class="acard__label">I have individual life insurance</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I have coverage through work"><span class="acard__label">I have coverage through work</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I have both"><span class="acard__label">I have both</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I do not currently have coverage"><span class="acard__label">I do not currently have coverage</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I am not sure what I have"><span class="acard__label">I am not sure what I have</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 5 ============ -->
-    <section class="ascreen" id="s-q5" data-step="5" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">Which statement sounds most like what you want to protect?</h2>
-        <div class="acards" role="group" aria-label="What you most want to protect — choose one" data-answer="q5">
-          <button type="button" class="acard" data-value="A home or debt with a time horizon"><span class="acard__label">A home or debt with a time horizon</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="The people who depend on my income"><span class="acard__label">The people who depend on my income</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="A business, work, or income source"><span class="acard__label">A business, work, or income source</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="A future or legacy I want to leave behind"><span class="acard__label">A future or legacy I want to leave behind</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Immediate transition or final expenses"><span class="acard__label">Immediate transition or final expenses</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="More than one of these"><span class="acard__label">More than one of these</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 6 ============ -->
-    <section class="ascreen" id="s-q6" data-step="6" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">Is there anything that makes this feel more complex?</h2>
-        <div class="acards" role="group" aria-label="Anything that adds complexity — choose one" data-answer="q6">
-          <button type="button" class="acard" data-value="A business or ownership interest"><span class="acard__label">A business or ownership interest</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Multiple households or shared responsibilities"><span class="acard__label">Multiple households or shared responsibilities</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="A long-term care or special support concern"><span class="acard__label">A long-term care or special support concern</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="An asset I want to keep or transfer"><span class="acard__label">An asset I want to keep or transfer</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Nothing specific comes to mind"><span class="acard__label">Nothing specific comes to mind</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="I am not sure"><span class="acard__label">I am not sure</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>Continue <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ STEP 7 ============ -->
-    <section class="ascreen" id="s-q7" data-step="7" data-select="single" data-dir="fwd" tabindex="-1">
-      <div class="ascreen__inner">
-        <h2 class="aquestion">What would you like to understand next?</h2>
-        <div class="acards" role="group" aria-label="What you would like to understand next — choose one" data-answer="q7">
-          <button type="button" class="acard" data-value="What kind of life insurance may fit my situation"><span class="acard__label">What kind of life insurance may fit my situation</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Whether my current coverage still makes sense"><span class="acard__label">Whether my current coverage still makes sense</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="How to protect a temporary responsibility"><span class="acard__label">How to protect a temporary responsibility</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="How to think about long-term protection"><span class="acard__label">How to think about long-term protection</span><span class="acard__mark" aria-hidden="true"></span></button>
-          <button type="button" class="acard" data-value="Whether a separate protection conversation is worth having"><span class="acard__label">Whether a separate protection conversation is worth having</span><span class="acard__mark" aria-hidden="true"></span></button>
-        </div>
-        <div class="acontrols">
-          <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
-          <button type="button" class="abtn abtn--primary" data-nav="next" disabled>See your direction <span class="arw" aria-hidden="true">→</span></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ TRANSITION ============ -->
-    <section class="ascreen" id="s-transition" data-dir="fwd" tabindex="-1" aria-label="Preparing your direction">
-      <div class="ascreen__inner ascreen__inner--center">
-        <p class="aeyebrow">Your Protection Direction</p>
-        <h2 class="atitle atitle--sm">Putting your starting point <em>together</em>.</h2>
-        <p class="alead">We are connecting the responsibilities you named with the life-insurance directions that may be worth exploring.</p>
-        <div class="aloader" aria-hidden="true"><span></span><span></span><span></span></div>
       </div>
     </section>
 
@@ -257,7 +272,23 @@
         </div>
 
         <div class="rblock">
-          <p class="rlabel">Life-insurance direction to explore</p>
+          <p class="rlabel">What you would want handled first</p>
+          <ol class="rpriority" id="rPriority"></ol>
+        </div>
+
+        <div class="rblock rblock--split">
+          <div>
+            <p class="rlabel">Your timeline</p>
+            <p class="rbody" id="rTimeline"></p>
+          </div>
+          <div>
+            <p class="rlabel">Your current coverage</p>
+            <p class="rbody" id="rCoverage"></p>
+          </div>
+        </div>
+
+        <div class="rblock">
+          <p class="rlabel">A conversation that may be relevant</p>
           <div class="rbadges" id="rBadges"></div>
         </div>
 
@@ -267,11 +298,16 @@
         </div>
 
         <div class="rblock">
+          <p class="rlabel">What to explore next</p>
+          <div class="rcards" id="rEdu"></div>
+        </div>
+
+        <div class="rblock">
           <p class="rlabel">What this does not decide</p>
           <p class="rbody">An exact policy, carrier, coverage amount, premium, eligibility, or approval.</p>
         </div>
 
-        <p class="rboundary">This is a preliminary policy-type direction based only on your assessment answers. Before any final recommendation, Morgan will confirm your full facts, existing coverage, carrier availability, underwriting, affordability, and required disclosures.</p>
+        <p class="rboundary">This is a preliminary educational direction based only on what you shared. A protection conversation is where Morgan reviews the full context, existing coverage, affordability, carrier availability, underwriting, and required disclosures.</p>
 
         <div class="acontrols acontrols--result">
           <button type="button" class="abtn abtn--primary" id="rRequest">Request a Protection Conversation <span class="arw" aria-hidden="true">→</span></button>
@@ -296,6 +332,7 @@
     </div>
   </div>
 
-  <script src="assessment.js?v=1"></script>
+  <script src="assessment-rules.js?v=2"></script>
+  <script src="assessment.js?v=2"></script>
 </body>
 </html>
