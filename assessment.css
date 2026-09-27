@@ -292,7 +292,65 @@ em { font-family: var(--serif); font-style: italic; }
   transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 /* multi-select marks read as rounded squares */
-.acards[data-answer="q1"] .acard__mark { border-radius: 7px; }
+.ascreen[data-select="multi"] .acard__mark { border-radius: 7px; }
+
+/* Long-label questions read better as a single stacked column */
+.acards--stack { grid-template-columns: 1fr; }
+
+/* Rank badge (Q4) — a calm ordinal chip instead of a checkbox */
+.acard__rank {
+  flex: 0 0 auto;
+  min-width: 34px;
+  height: 26px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  border: 1.5px solid #d3cfe0;
+  border-radius: 999px;
+  background: transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.acard.is-ranked { border-color: var(--lav); background: var(--lav-soft); }
+.acard.is-ranked .acard__rank { color: var(--ink); border-color: var(--lav); background: var(--lav); }
+
+/* Rank reorder panel */
+.arank {
+  margin-top: 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.arank[hidden] { display: none; }
+.arank__label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px;
+}
+.arank__list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.arank__item { display: flex; align-items: center; gap: 12px; }
+.arank__chip {
+  flex: 0 0 auto; min-width: 34px; height: 26px; padding: 0 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--ink);
+  background: var(--lav); border-radius: 999px;
+}
+.arank__name { flex: 1 1 auto; font-size: 0.95rem; color: var(--ink); line-height: 1.35; }
+.arank__moves { flex: 0 0 auto; display: inline-flex; gap: 6px; }
+.arank__btn {
+  width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--ink-soft);
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px; cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.arank__btn:hover { border-color: var(--lav-line); color: var(--ink); }
+.arank__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.arank__btn--x { color: var(--muted); font-size: 18px; }
 
 .acard[aria-pressed="true"] {
   border-color: var(--lav);
@@ -490,6 +548,24 @@ em { font-family: var(--serif); font-style: italic; }
   max-width: 60ch;
 }
 
+.rblock--split { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 32px; }
+.rblock--split > div { min-width: 0; }
+
+.rpriority { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.rpriority__item { display: flex; align-items: center; gap: 12px; }
+.rpriority__rank {
+  flex: 0 0 auto; min-width: 34px; height: 26px; padding: 0 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--ink);
+  background: var(--lav-soft); border: 1.5px solid var(--lav); border-radius: 999px;
+}
+.rpriority__name { font-size: 1rem; color: var(--ink); line-height: 1.4; }
+
+.rcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.rcard { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+.rcard__title { font-family: var(--serif); font-weight: 500; font-size: 1.05rem; color: var(--ink); margin-bottom: 6px; }
+.rcard__body { font-size: 0.92rem; line-height: 1.55; color: var(--ink-soft); }
+
 .rchips { display: flex; flex-wrap: wrap; gap: 9px; }
 .rchip {
   font-size: 13px;
@@ -583,6 +659,8 @@ em { font-family: var(--serif); font-style: italic; }
 @media (max-width: 560px) {
   .astage { padding: 28px 20px 60px; }
   .acards { grid-template-columns: 1fr; }
+  .rblock--split { grid-template-columns: 1fr; gap: 22px; }
+  .rcards { grid-template-columns: 1fr; }
   .afield-row { grid-template-columns: 1fr; gap: 0; }
   .acontrols { gap: 10px; }
   .abtn { padding: 14px 20px; }
