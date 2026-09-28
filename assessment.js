@@ -358,6 +358,22 @@
     if (n) { n.textContent = msg; n.hidden = false; }
   }
 
+  // Invite-only pilot: replace the result content with a friendly message. No
+  // direction, summary, or CTA is shown (nothing was produced for this email).
+  function showInvitationOnly(message) {
+    var inner = document.querySelector("#s-result .ascreen__inner");
+    if (!inner) return;
+    inner.innerHTML = "";
+    var eyebrow = document.createElement("p"); eyebrow.className = "aeyebrow"; eyebrow.textContent = "By invitation";
+    var h = document.createElement("h1"); h.className = "atitle atitle--sm"; h.textContent = "Thank you for your interest.";
+    var p = document.createElement("p"); p.className = "alead";
+    p.textContent = message || "The Protection Assessment is currently available by invitation while this first version is being reviewed.";
+    var controls = document.createElement("div"); controls.className = "acontrols acontrols--result";
+    var link = document.createElement("a"); link.className = "atextlink"; link.href = "index.html"; link.textContent = "Return to the homepage";
+    controls.appendChild(link);
+    inner.appendChild(eyebrow); inner.appendChild(h); inner.appendChild(p); inner.appendChild(controls);
+  }
+
   // Local deterministic direction shaped like the server response (instant render
   // + graceful fallback if the service is unreachable).
   function localDirection() {
@@ -410,6 +426,9 @@
       if (!res.ok) throw new Error("submit");
       return res.json();
     }).then(function (data) {
+      // Invite-only pilot: a non-invited email is turned away with a friendly,
+      // non-technical message and no result is produced.
+      if (data && data.status === "invitation_required") { showInvitationOnly(data.message); return; }
       // Upgrade to the server-authoritative direction + timing note.
       if (data && data.direction) { renderDirection(data.direction); lastResult = data.direction; }
       if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
