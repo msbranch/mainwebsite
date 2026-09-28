@@ -31,6 +31,8 @@
     firstName: "", lastName: "", email: "",
     assessmentAcknowledgment: false,
     marketingConsent: false,
+    hp: "",                              // honeypot (must stay empty)
+    startedAt: new Date().toISOString(), // timing signal captured at page load
     index: 0
   };
 
@@ -227,6 +229,7 @@
     var email = document.getElementById("fEmail");
     var ackReq = document.getElementById("ackReq");
     var optMkt = document.getElementById("optMarketing");
+    var hp = document.getElementById("aHP");
     var cont = document.getElementById("gateContinue");
 
     function validate() {
@@ -235,6 +238,7 @@
       state.email = email.value.trim();
       state.assessmentAcknowledgment = ackReq.checked;
       state.marketingConsent = optMkt.checked;
+      state.hp = hp ? hp.value.trim() : "";
       var ok = state.firstName && state.lastName && EMAIL_RE.test(state.email) && state.assessmentAcknowledgment;
       cont.disabled = !ok;
       return ok;
@@ -271,102 +275,189 @@
     "I am not sure whether I have coverage": "You are not sure whether you have coverage."
   };
 
+  // Approved local fallback summary (digit-free), used only if the service is
+  // unreachable so the personalized-summary block is never empty or an error.
+  var LOCAL_FALLBACK = [
+    "Thank you for taking the time to share what your income helps carry. What you told us is enough to see a clear starting point — a direction worth talking through, not a decision to make on your own.",
+    "The next useful step is a short, no-pressure conversation. That is where the full picture gets reviewed together: the responsibilities you named, anything already in place, what feels affordable, and the questions you still have. Nothing here is a quote, an application, or a recommendation about any specific policy.",
+    "When you are ready, you can request that conversation. There is no obligation, and you are always in control of the pace."
+  ];
+
+  function cfg() { return (window.PA_CONFIG || {}); }
+
+  // Build the EXACT public submission the Assessment Intake validator accepts.
+  function buildSubmitPayload() {
+    return {
+      payloadVersion: "assessment-submission-v1",
+      ageBand: state.ageBand,
+      incomeCarryingThemes: state.incomeCarryingThemes.slice(),
+      impactThemes: state.impactThemes.slice(),
+      priorityOrder: state.priorityOrder.slice(),
+      timeHorizon: state.timeHorizon,
+      existingCoverageStatus: state.existingCoverageStatus,
+      incomePattern: state.incomePattern,
+      educationPriorities: state.educationPriorities.slice(),
+      contact: { firstName: state.firstName, lastName: state.lastName, email: state.email.toLowerCase() },
+      acknowledgment: !!state.assessmentAcknowledgment,
+      marketingConsent: !!state.marketingConsent,
+      meta: { startedAt: state.startedAt, hp: state.hp || "" }
+    };
+  }
+
+  // ---- Render helpers for the six-section result hierarchy ----
+  function setText(id, text) { var el = document.getElementById(id); if (el) el.textContent = text || ""; }
+
+  function renderDirection(dir) {
+    // 1 — Preliminary Protection Direction label
+    var badges = document.getElementById("rDirection");
+    if (badges) {
+      badges.innerHTML = "";
+      var b = document.createElement("div");
+      b.className = "rbadge";
+      b.textContent = dir.routeLabel || "";
+      badges.appendChild(b);
+    }
+    // 2 — Why this direction surfaced
+    setText("rReasons", dir.reasons || "");
+    // 4 — What to clarify in a quote conversation
+    var focus = document.getElementById("rFocus");
+    if (focus) {
+      focus.innerHTML = "";
+      (dir.conversationFocus || []).forEach(function (item) {
+        var li = document.createElement("li");
+        li.className = "rfocus__item";
+        li.textContent = item;
+        focus.appendChild(li);
+      });
+    }
+  }
+
+  function renderTimingNote(note) { setText("rTimingNote", note || ""); }
+
+  function renderReflection(paragraphs, isFallback) {
+    var pending = document.getElementById("rPending");
+    var wrap = document.getElementById("rReflection");
+    var note = document.getElementById("rReflectionNote");
+    var stateEl = document.getElementById("rSummaryState");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    (paragraphs || []).forEach(function (p) {
+      var el = document.createElement("p");
+      el.className = "rreflection__p";
+      el.textContent = p;
+      wrap.appendChild(el);
+    });
+    if (pending) pending.hidden = true;
+    wrap.hidden = false;
+    if (note) note.hidden = false;
+    if (stateEl) stateEl.setAttribute("data-state", isFallback ? "fallback" : "complete");
+  }
+
+  function showNotice(msg) {
+    var n = document.getElementById("rNotice");
+    if (n) { n.textContent = msg; n.hidden = false; }
+  }
+
+  // Local deterministic direction shaped like the server response (instant render
+  // + graceful fallback if the service is unreachable).
+  function localDirection() {
+    var res = window.PADirection.resolve(state);
+    return {
+      routeKey: res.routeKey,
+      routeLabel: res.routeLabel,
+      reasons: res.why,
+      conversationFocus: (res.educationCards || []).map(function (c) { return c.body; }).slice(0, 3),
+      allowedProductConcepts: []
+    };
+  }
+  function localTimingNote() {
+    var older = state.ageBand === "50–59" || state.ageBand === "60+";
+    return older
+      ? "Age can affect both cost and available options. A conversation now can clarify what is currently available rather than leaving the question unresolved."
+      : "Age is one factor insurers use in pricing. Beginning a protection conversation earlier can sometimes mean lower costs for comparable coverage later. Actual cost and availability depend on health, policy design, coverage amount, and underwriting.";
+  }
+
   var lastResult = null;
   function buildResult() {
     var first = state.firstName || "";
-    document.getElementById("rGreet").textContent = first ? first + ", here is where I would start." : "Here is where I would start.";
-    document.getElementById("rSummary").textContent = "A starting point built only from what you shared — a direction to explore, not a decision.";
+    setText("rGreet", first ? first + ", here is your preliminary direction." : "Here is your preliminary direction.");
+    setText("rSummary", "A starting point built only from what you shared — a direction to explore, not a decision.");
 
-    // 1 — What income is connected to (chips)
-    var chipWrap = document.getElementById("rChips");
-    chipWrap.innerHTML = "";
-    var themes = state.incomeCarryingThemes.length ? state.incomeCarryingThemes : ["Your responsibilities"];
-    themes.forEach(function (name) {
-      var el = document.createElement("span");
-      el.className = "rchip";
-      el.textContent = name;
-      chipWrap.appendChild(el);
-    });
+    // Instant deterministic render (upgraded to server-authoritative on response).
+    var local = localDirection();
+    lastResult = local;
+    renderDirection(local);
+    renderTimingNote(localTimingNote());
+    window.ProtectionAssessment.lastResult = local;
 
-    // 2 & 3 — Ranked priorities
-    var pr = document.getElementById("rPriority");
-    pr.innerHTML = "";
-    if (state.priorityOrder.length) {
-      state.priorityOrder.forEach(function (v, i) {
-        var li = document.createElement("li");
-        li.className = "rpriority__item";
-        li.innerHTML = '<span class="rpriority__rank">' + ORDINAL[i] + '</span><span class="rpriority__name"></span>';
-        li.querySelector(".rpriority__name").textContent = v;
-        pr.appendChild(li);
-      });
-    } else {
-      var li = document.createElement("li");
-      li.className = "rpriority__item";
-      li.innerHTML = '<span class="rpriority__name">Your responsibilities, in the order that matters to you.</span>';
-      pr.appendChild(li);
-    }
-
-    // 4 — Timeline · 5 — Coverage
-    document.getElementById("rTimeline").textContent = TIMELINE_TEXT[state.timeHorizon] || "You have not set a timeline yet.";
-    document.getElementById("rCoverage").textContent = COVERAGE_TEXT[state.existingCoverageStatus] || "Your current coverage was not specified.";
-
-    // 6 — Primary Protection Direction (route) + 7 — education cards + why
-    var res = window.PADirection.resolve(state);
-    lastResult = res;
-
-    var badges = document.getElementById("rBadges");
-    badges.innerHTML = "";
-    var badge = document.createElement("div");
-    badge.className = "rbadge";
-    badge.textContent = res.routeLabel;
-    badges.appendChild(badge);
-
-    document.getElementById("rWhy").textContent = res.why;
-
-    var edu = document.getElementById("rEdu");
-    edu.innerHTML = "";
-    res.educationCards.forEach(function (c) {
-      var card = document.createElement("div");
-      card.className = "rcard";
-      var h = document.createElement("p"); h.className = "rcard__title"; h.textContent = c.title;
-      var b = document.createElement("p"); b.className = "rcard__body"; b.textContent = c.body;
-      card.appendChild(h); card.appendChild(b);
-      edu.appendChild(card);
-    });
-
-    // Expose a local read-only hook for the future data seam + testing only.
-    // Nothing here is sent, stored, or logged.
-    window.ProtectionAssessment.lastResult = res;
+    // Submit to the public Assessment Intake service and resolve the summary.
+    submitAndResolve();
   }
 
-  /* ---- Future data seam: local mapping ONLY (never sent this pass) ----
-     Maps the local state to the typed AssessmentSubmissionV1 the Lead Desk
-     intake service already accepts. Defined for documentation/testing; it is
-     not called during the flow and no data leaves the browser. */
-  function buildFuturePayload() {
-    var res = lastResult || window.PADirection.resolve(state);
-    return {
-      payloadVersion: "assessment-submission-v1",
-      assessmentType: "Protection Assessment",
-      assessmentVersion: "protection-assessment-web-2026-09",
-      completedAt: new Date().toISOString(),
-      source: "Protection Assessment",
-      contact: { firstName: state.firstName, lastName: state.lastName, email: state.email.toLowerCase() },
-      answers: {
-        ageBand: state.ageBand,
-        incomeCarryingThemes: state.incomeCarryingThemes.slice(),
-        impactThemes: state.impactThemes.slice(),
-        priorityOrder: state.priorityOrder.slice(),
-        timeHorizon: state.timeHorizon,
-        existingCoverageStatus: state.existingCoverageStatus,
-        incomePattern: state.incomePattern,
-        educationPriorities: state.educationPriorities.slice(),
-        resolvedRouteKey: res.routeKey,
-        resolvedRouteLabel: res.routeLabel
-      },
-      assessmentAcknowledgment: state.assessmentAcknowledgment,
-      marketingConsent: state.marketingConsent
-    };
+  function submitAndResolve() {
+    var c = cfg();
+    var url = (c.apiBase || "") + (c.submitPath || "/v1/protection-assessments");
+    var ac = window.AbortController ? new AbortController() : null;
+    var timer = ac ? setTimeout(function () { ac.abort(); }, 8000) : null;
+
+    fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json", "idempotency-key": makeIdemKey() },
+      body: JSON.stringify(buildSubmitPayload()),
+      signal: ac ? ac.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      if (!res.ok) throw new Error("submit");
+      return res.json();
+    }).then(function (data) {
+      // Upgrade to the server-authoritative direction + timing note.
+      if (data && data.direction) { renderDirection(data.direction); lastResult = data.direction; }
+      if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
+      var resultId = data && data.resultId;
+      var token = data && data.resultToken;
+      if (resultId && token) { pollStatus(resultId, token, (c.pollTries || 6)); }
+      else { renderReflection(LOCAL_FALLBACK, true); }   // no token → approved fallback
+    }).catch(function () {
+      if (timer) clearTimeout(timer);
+      // Service unreachable / not enabled: keep the deterministic direction and
+      // show the approved fallback summary. Never expose an error or technical detail.
+      renderReflection(LOCAL_FALLBACK, true);
+    });
+  }
+
+  function pollStatus(resultId, token, triesLeft) {
+    var c = cfg();
+    var url = (c.apiBase || "") + (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(resultId);
+    fetch(url, { method: "GET", headers: { "x-result-token": token } })
+      .then(function (res) { if (!res.ok) throw new Error("status"); return res.json(); })
+      .then(function (data) {
+        var status = data && data.status;
+        if (data && data.direction) renderDirection(data.direction);
+        if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
+        if (status === "complete" && data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) {
+          renderReflection(data.reflection.paragraphs, false);
+        } else if (status === "fallback") {
+          renderReflection((data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) ? data.reflection.paragraphs : LOCAL_FALLBACK, true);
+        } else if (status === "expired") {
+          showNotice("This result has expired. You can begin the assessment again whenever you are ready.");
+          renderReflection(LOCAL_FALLBACK, true);
+        } else if (triesLeft > 1) {
+          setTimeout(function () { pollStatus(resultId, token, triesLeft - 1); }, c.pollIntervalMs || 1500);
+        } else {
+          renderReflection(LOCAL_FALLBACK, true);   // still pending after budget → approved fallback
+        }
+      })
+      .catch(function () {
+        if (triesLeft > 1) { setTimeout(function () { pollStatus(resultId, token, triesLeft - 1); }, c.pollIntervalMs || 1500); }
+        else { renderReflection(LOCAL_FALLBACK, true); }
+      });
+  }
+
+  function makeIdemKey() {
+    try {
+      if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+    } catch (e) {}
+    return String(Date.now()) + "-" + Math.random().toString(36).slice(2);
   }
 
   // ---- Conversation-request modal ----
@@ -397,7 +488,7 @@
   // ---- Init ----
   window.ProtectionAssessment = {
     getState: function () { return state; },
-    buildFuturePayload: buildFuturePayload,
+    buildSubmitPayload: buildSubmitPayload,
     lastResult: null
   };
   wireCards();

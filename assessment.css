@@ -674,3 +674,34 @@ em { font-family: var(--serif); font-style: italic; }
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
   .ascreen.is-active[data-dir] { animation: none; }
 }
+
+/* ---------- Result: personalized summary states + focus list + notice ---------- */
+
+.rfocus { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rfocus__item { position: relative; padding-left: 22px; line-height: 1.5; }
+.rfocus__item::before { content: ""; position: absolute; left: 4px; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.55; }
+
+.rbody--muted { opacity: 0.85; }
+
+.rpending { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; background: rgba(0,0,0,0.02); }
+.rspin { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.2); border-top-color: currentColor; display: inline-block; animation: rspin 0.9s linear infinite; flex: none; }
+@keyframes rspin { to { transform: rotate(360deg); } }
+
+.rreflection { display: grid; gap: 14px; }
+.rreflection__p { margin: 0; line-height: 1.6; }
+.rmicro { margin: 10px 0 0; font-size: 0.86rem; opacity: 0.7; }
+
+.rnotice { margin: 14px 0 22px; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.12); border-radius: 12px; background: rgba(0,0,0,0.03); line-height: 1.5; }
+
+/* Honeypot: kept in the DOM, kept out of sight and off the tab order. */
+.ahp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Footer */
+.afooter { text-align: center; padding: 34px 20px 46px; font-size: 0.9rem; opacity: 0.75; }
+.afooter a { color: inherit; }
+
+@media (prefers-color-scheme: dark) {
+  .rpending { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
+  .rspin { border-color: rgba(255,255,255,0.25); border-top-color: currentColor; }
+  .rnotice { border-color: rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); }
+}
