@@ -240,6 +240,12 @@
             <input type="email" id="fEmail" name="email" autocomplete="email" inputmode="email" required />
           </div>
 
+          <!-- Honeypot: must stay empty; hidden from people, off the tab order -->
+          <div class="ahp" aria-hidden="true">
+            <label for="aHP">Do not fill this in</label>
+            <input type="text" id="aHP" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
           <label class="acheck acheck--req">
             <input type="checkbox" id="ackReq" required />
             <span>I understand this assessment provides general educational direction only. It is not a quote, insurance application, coverage recommendation, or guarantee of eligibility or approval.</span>
@@ -249,7 +255,7 @@
             <span>Send me occasional plain-English education from Morgan Branch the Broker about protection and financial clarity.</span>
           </label>
 
-          <p class="afine afine--left">By continuing, you agree to the Privacy Policy and understand this assessment does not provide a final policy recommendation, coverage amount, premium, eligibility decision, or insurance approval.</p>
+          <p class="afine afine--left">By continuing, you agree to the <a href="privacy.html">Privacy Policy</a> and understand this assessment does not provide a final policy recommendation, coverage amount, premium, eligibility decision, or insurance approval. Your first name and selected answers are used to prepare an automated summary; your email and last name are <strong>not</strong> sent to that automated step.</p>
 
           <div class="acontrols">
             <button type="button" class="abtn abtn--ghost" data-nav="back"><span class="arw arw--l" aria-hidden="true">←</span> Back</button>
@@ -260,57 +266,63 @@
     </section>
 
     <!-- ============ RESULT ============ -->
-    <section class="ascreen" id="s-result" data-dir="fwd" tabindex="-1" aria-label="Your protection direction">
+    <section class="ascreen" id="s-result" data-dir="fwd" tabindex="-1" aria-label="Your preliminary protection direction">
       <div class="ascreen__inner">
-        <p class="aeyebrow">Your Protection Direction</p>
+        <p class="aeyebrow">Your result</p>
         <h1 class="atitle atitle--sm" id="rGreet">Here is where I would start.</h1>
         <p class="alead" id="rSummary"></p>
 
+        <!-- Recovery notice (shown only for an expired/unavailable result) -->
+        <div class="rnotice" id="rNotice" hidden role="status" aria-live="polite"></div>
+
+        <!-- 1 — Preliminary Protection Direction (server-determined) -->
         <div class="rblock">
-          <p class="rlabel">What your income appears to carry</p>
-          <div class="rchips" id="rChips"></div>
+          <p class="rlabel">Your Preliminary Protection Direction</p>
+          <div class="rbadges" id="rDirection"></div>
         </div>
 
+        <!-- 2 — Why this direction surfaced (server-determined) -->
         <div class="rblock">
-          <p class="rlabel">What you would want handled first</p>
-          <ol class="rpriority" id="rPriority"></ol>
+          <p class="rlabel">Why this direction surfaced</p>
+          <p class="rbody" id="rReasons"></p>
         </div>
 
-        <div class="rblock rblock--split">
-          <div>
-            <p class="rlabel">Your timeline</p>
-            <p class="rbody" id="rTimeline"></p>
+        <!-- 3 — Timing note (server-determined, shown separately from the AI copy) -->
+        <div class="rblock">
+          <p class="rlabel">Timing note</p>
+          <p class="rbody rbody--muted" id="rTimingNote"></p>
+        </div>
+
+        <!-- 4 — What to clarify in a quote conversation (server-determined) -->
+        <div class="rblock">
+          <p class="rlabel">What to clarify in a quote conversation</p>
+          <ul class="rfocus" id="rFocus"></ul>
+        </div>
+
+        <!-- 5 — Your personalized summary (validated AI reflection or approved fallback) -->
+        <div class="rblock">
+          <p class="rlabel">Your personalized summary</p>
+          <div id="rSummaryState" data-state="pending">
+            <div class="rpending" id="rPending" role="status" aria-live="polite">
+              <span class="rspin" aria-hidden="true"></span>
+              <span>Putting your personalized protection direction together…</span>
+            </div>
+            <div class="rreflection" id="rReflection" hidden></div>
           </div>
-          <div>
-            <p class="rlabel">Your current coverage</p>
-            <p class="rbody" id="rCoverage"></p>
-          </div>
+          <p class="rmicro" id="rReflectionNote" hidden>A supporting summary that helps explain the direction above — it is not the basis for it.</p>
         </div>
 
-        <div class="rblock">
-          <p class="rlabel">A conversation that may be relevant</p>
-          <div class="rbadges" id="rBadges"></div>
-        </div>
-
-        <div class="rblock">
-          <p class="rlabel">Why this may be relevant</p>
-          <p class="rbody" id="rWhy"></p>
-        </div>
-
-        <div class="rblock">
-          <p class="rlabel">What to explore next</p>
-          <div class="rcards" id="rEdu"></div>
-        </div>
-
+        <!-- Boundary -->
         <div class="rblock">
           <p class="rlabel">What this does not decide</p>
           <p class="rbody">An exact policy, carrier, coverage amount, premium, eligibility, or approval.</p>
         </div>
 
-        <p class="rboundary">This is a preliminary educational direction based only on what you shared. A protection conversation is where Morgan reviews the full context, existing coverage, affordability, carrier availability, underwriting, and required disclosures.</p>
+        <p class="rboundary">This is a preliminary educational direction based only on what you shared. A quote conversation is where Morgan reviews the full context, existing coverage, affordability, carrier availability, underwriting, and required disclosures.</p>
 
+        <!-- 6 — Request a quote conversation (Lead Desk handoff / CTA) -->
         <div class="acontrols acontrols--result">
-          <button type="button" class="abtn abtn--primary" id="rRequest">Request a Protection Conversation <span class="arw" aria-hidden="true">→</span></button>
+          <button type="button" class="abtn abtn--primary" id="rRequest">Request a quote conversation <span class="arw" aria-hidden="true">→</span></button>
           <a class="atextlink" href="index.html">Return to the homepage</a>
         </div>
       </div>
@@ -332,7 +344,24 @@
     </div>
   </div>
 
-  <script src="assessment-rules.js?v=2"></script>
-  <script src="assessment.js?v=2"></script>
+  <footer class="afooter">
+    <p>© Morgan Branch the Broker · <a href="privacy.html">Privacy Policy</a> · <a href="index.html">Home</a></p>
+  </footer>
+
+  <script>
+    /* Public Assessment Intake endpoints (public submit + token-gated status ONLY).
+       The browser never calls Zapier, OpenAI, Secrets Manager, or the private
+       callback. Overridable for tests by setting window.PA_CONFIG before load. */
+    window.PA_CONFIG = window.PA_CONFIG || {
+      apiBase: "https://s74stha6hd.execute-api.us-east-1.amazonaws.com",
+      submitPath: "/v1/protection-assessments",
+      statusPath: "/v1/protection-assessments/",
+      assessmentVersion: "protection-assessment-web-2026-09",
+      pollTries: 6,
+      pollIntervalMs: 1500
+    };
+  </script>
+  <script src="assessment-rules.js?v=3"></script>
+  <script src="assessment.js?v=3"></script>
 </body>
 </html>
