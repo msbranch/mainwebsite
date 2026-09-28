@@ -30,9 +30,16 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-// Prefer the environment's global Playwright; fall back to a local install.
+// Resolve Playwright from: an explicit env path, a local install in the working
+// directory (CI `npm i playwright`), the script's own tree, or the environment's
+// global module.
 let chromium;
-for (const p of [process.env.PLAYWRIGHT_MODULE, "/opt/node22/lib/node_modules/playwright", "playwright"]) {
+for (const p of [
+  process.env.PLAYWRIGHT_MODULE,
+  path.join(process.cwd(), "node_modules", "playwright"),
+  "playwright",
+  "/opt/node22/lib/node_modules/playwright",
+]) {
   if (!p) continue;
   try { ({ chromium } = require(p)); break; } catch { /* try next */ }
 }
