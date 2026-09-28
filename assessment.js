@@ -400,21 +400,65 @@
     setText("rSummary", "A starting point built only from what you shared — a direction to explore, not a decision.");
 
     // Instant deterministic render (upgraded to server-authoritative on response).
-    var local = localDirection();
-    lastResult = local;
-    renderDirection(local);
-    renderTimingNote(localTimingNote());
-    window.ProtectionAssessment.lastResult = local;
+    // Guarded so a rules edge case can never leave the result screen half-rendered
+    // or block the summary poller.
+    try {
+      var local = localDirection();
+      lastResult = local;
+      renderDirection(local);
+      renderTimingNote(localTimingNote());
+      window.ProtectionAssessment.lastResult = local;
+    } catch (e) { /* server response will populate the direction */ }
 
     // Submit to the public Assessment Intake service and resolve the summary.
     submitAndResolve();
   }
 
+  // Context captured from the accepted result, used by the follow-up CTAs. Only a
+  // completed/fallback result (a real record the Lead Desk can attach to) enables
+  // the CTAs.
+  var resultContext = { resultId: null, token: null };
+  // The personalized-summary block resolves EXACTLY ONCE. Every polling path funnels
+  // through a terminal helper guarded by this flag, so the loader can never be left
+  // spinning and can never be replaced twice.
+  var summaryResolved = false;
+
+  function finishSummary(paragraphs, isFallback) {
+    if (summaryResolved) return;
+    summaryResolved = true;
+    renderReflection(paragraphs, isFallback);
+    revealFollowUp();
+  }
+  function finishExpired() {
+    if (summaryResolved) return;
+    summaryResolved = true;
+    showNotice("This result has expired. You can begin the assessment again whenever you are ready.");
+    renderReflection(LOCAL_FALLBACK, true);
+  }
+  function finishTimedOut() {
+    if (summaryResolved) return;
+    summaryResolved = true;
+    // Plain recovery state — the loader is always replaced, never left spinning.
+    showNotice("Your personalized summary is taking a little longer than usual. The direction above is ready now, and you can request a conversation whenever you like.");
+    renderReflection(LOCAL_FALLBACK, true);
+    revealFollowUp();
+  }
+
   function submitAndResolve() {
     var c = cfg();
+
+    // Test seam (staging integration test only): poll an existing seeded result by
+    // id + token, with no public submission. Never used in the live page config.
+    if (c.testResultId && c.testResultToken) {
+      resultContext.resultId = c.testResultId;
+      resultContext.token = c.testResultToken;
+      startPolling(c.testResultId, c.testResultToken);
+      return;
+    }
+
     var url = (c.apiBase || "") + (c.submitPath || "/v1/protection-assessments");
     var ac = window.AbortController ? new AbortController() : null;
-    var timer = ac ? setTimeout(function () { ac.abort(); }, 8000) : null;
+    var timer = ac ? setTimeout(function () { ac.abort(); }, c.getTimeoutMs || 8000) : null;
 
     fetch(url, {
       method: "POST",
@@ -434,42 +478,72 @@
       if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
       var resultId = data && data.resultId;
       var token = data && data.resultToken;
-      if (resultId && token) { pollStatus(resultId, token, (c.pollTries || 6)); }
-      else { renderReflection(LOCAL_FALLBACK, true); }   // no token → approved fallback
+      if (resultId && token) {
+        resultContext.resultId = resultId;
+        resultContext.token = token;
+        startPolling(resultId, token);
+      } else {
+        finishSummary(LOCAL_FALLBACK, true);   // no token → approved fallback (no CTA target)
+      }
     }).catch(function () {
       if (timer) clearTimeout(timer);
       // Service unreachable / not enabled: keep the deterministic direction and
       // show the approved fallback summary. Never expose an error or technical detail.
-      renderReflection(LOCAL_FALLBACK, true);
+      finishSummary(LOCAL_FALLBACK, true);
     });
   }
 
-  function pollStatus(resultId, token, triesLeft) {
+  // Bounded, resilient poller. One overall deadline, a per-request abort timeout,
+  // retry-until-deadline (not a fixed try count), and a single guaranteed terminal
+  // render. It can never spin forever, and it never writes tokens, emails, payloads,
+  // or technical errors to the browser console.
+  function startPolling(resultId, token) {
     var c = cfg();
+    var deadline = Date.now() + (c.pollDeadlineMs || 75000);
+    var interval = c.pollIntervalMs || 2500;
+    var getTimeout = c.getTimeoutMs || 8000;
     var url = (c.apiBase || "") + (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(resultId);
-    fetch(url, { method: "GET", headers: { "x-result-token": token } })
-      .then(function (res) { if (!res.ok) throw new Error("status"); return res.json(); })
-      .then(function (data) {
-        var status = data && data.status;
-        if (data && data.direction) renderDirection(data.direction);
-        if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
-        if (status === "complete" && data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) {
-          renderReflection(data.reflection.paragraphs, false);
-        } else if (status === "fallback") {
-          renderReflection((data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) ? data.reflection.paragraphs : LOCAL_FALLBACK, true);
-        } else if (status === "expired") {
-          showNotice("This result has expired. You can begin the assessment again whenever you are ready.");
-          renderReflection(LOCAL_FALLBACK, true);
-        } else if (triesLeft > 1) {
-          setTimeout(function () { pollStatus(resultId, token, triesLeft - 1); }, c.pollIntervalMs || 1500);
-        } else {
-          renderReflection(LOCAL_FALLBACK, true);   // still pending after budget → approved fallback
-        }
-      })
-      .catch(function () {
-        if (triesLeft > 1) { setTimeout(function () { pollStatus(resultId, token, triesLeft - 1); }, c.pollIntervalMs || 1500); }
-        else { renderReflection(LOCAL_FALLBACK, true); }
-      });
+
+    function scheduleNext() {
+      if (summaryResolved) return;
+      if (Date.now() >= deadline) { finishTimedOut(); return; }
+      setTimeout(pollOnce, interval);
+    }
+
+    function pollOnce() {
+      if (summaryResolved) return;
+      var ac = window.AbortController ? new AbortController() : null;
+      var timer = ac ? setTimeout(function () { ac.abort(); }, getTimeout) : null;
+      fetch(url, { method: "GET", headers: { "x-result-token": token }, signal: ac ? ac.signal : undefined })
+        .then(function (res) {
+          if (timer) clearTimeout(timer);
+          // A missing/expired record answers 404 (no token oracle) or 410.
+          if (res.status === 404 || res.status === 410) return { status: "expired" };
+          if (!res.ok) throw new Error("status");
+          return res.json();
+        })
+        .then(function (data) {
+          if (summaryResolved) return;
+          var status = data && data.status;
+          if (data && data.direction) renderDirection(data.direction);
+          if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
+          if (status === "complete" && data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) {
+            finishSummary(data.reflection.paragraphs, false);
+          } else if (status === "fallback") {
+            finishSummary((data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) ? data.reflection.paragraphs : LOCAL_FALLBACK, true);
+          } else if (status === "expired") {
+            finishExpired();
+          } else {
+            scheduleNext();   // still pending → keep polling until the deadline
+          }
+        })
+        .catch(function () {
+          if (timer) clearTimeout(timer);
+          scheduleNext();     // transient/aborted GET → retry until the deadline
+        });
+    }
+
+    pollOnce();
   }
 
   function makeIdemKey() {
@@ -479,18 +553,90 @@
     return String(Date.now()) + "-" + Math.random().toString(36).slice(2);
   }
 
-  // ---- Conversation-request modal ----
-  function wireModal() {
-    var modal = document.getElementById("amodal");
-    var openBtn = document.getElementById("rRequest");
-    if (!modal || !openBtn) return;
-    var box = modal.querySelector(".amodal__box");
-    var lastFocus = null;
-    function open() { lastFocus = document.activeElement; modal.hidden = false; box.focus(); document.addEventListener("keydown", onKey); }
-    function close() { modal.hidden = true; document.removeEventListener("keydown", onKey); if (lastFocus) { try { lastFocus.focus(); } catch (e) {} } }
-    function onKey(e) { if (e.key === "Escape") close(); }
-    openBtn.addEventListener("click", open);
-    modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", close); });
+  // ---- Follow-up CTAs (Coverage Review / Quote Conversation) ----
+  // Two visible, working next-step buttons. On click the browser calls ONLY the
+  // token-gated public Assessment Intake follow-up route; the Assessment Intake
+  // service performs the private Lead Desk handoff. The browser never calls the
+  // Lead Desk, collects no new information, and creates no new lead or record.
+  var followUpSent = { coverage_review: false, quote_conversation: false };
+  var FOLLOW_UP_COPY = {
+    coverage_review: "Your Coverage Review request has been saved.",
+    quote_conversation: "Your Quote Conversation request has been saved."
+  };
+
+  // The CTAs become usable only once a real result exists for the Lead Desk to
+  // attach to (a completed or fallback result with a token). Until then they stay
+  // visible but inert, so a click can never target a result that isn't there.
+  function revealFollowUp() {
+    var wrap = document.getElementById("rFollowUp");
+    if (wrap) wrap.hidden = false;
+    var ready = !!(resultContext.resultId && resultContext.token);
+    ["rCoverageReview", "rQuoteConversation"].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) b.disabled = !ready;
+    });
+  }
+
+  function showFollowUpStatus(msg, kind) {
+    var s = document.getElementById("rFollowUpStatus");
+    if (!s) return;
+    s.textContent = msg;
+    s.hidden = false;
+    s.setAttribute("data-kind", kind || "info");
+  }
+
+  function setFollowUpBusy(busy) {
+    ["rCoverageReview", "rQuoteConversation"].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) b.setAttribute("aria-busy", busy ? "true" : "false");
+    });
+  }
+
+  function submitFollowUp(requestType) {
+    var c = cfg();
+    // Idempotent on the client: once a type is confirmed, repeated clicks just
+    // re-show the confirmation and never send a second request.
+    if (followUpSent[requestType]) { showFollowUpStatus(FOLLOW_UP_COPY[requestType], "ok"); return; }
+    if (!resultContext.resultId || !resultContext.token) {
+      showFollowUpStatus("This request needs a completed result. Please begin the assessment again when you are ready.", "info");
+      return;
+    }
+    setFollowUpBusy(true);
+    var base = (c.apiBase || "");
+    var path = (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(resultContext.resultId) + (c.followUpSuffix || "/follow-up");
+    var ac = window.AbortController ? new AbortController() : null;
+    var timer = ac ? setTimeout(function () { ac.abort(); }, c.getTimeoutMs || 8000) : null;
+    fetch(base + path, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-result-token": resultContext.token },
+      body: JSON.stringify({ payloadVersion: "assessment-follow-up-v1", requestType: requestType }),
+      signal: ac ? ac.signal : undefined
+    }).then(function (res) {
+      if (timer) clearTimeout(timer);
+      // A saved request (or an idempotent repeat) answers 200. Anything else is a
+      // soft, non-technical retry state — no status code or payload is surfaced.
+      if (res.ok) return true;
+      return false;
+    }).then(function (okr) {
+      setFollowUpBusy(false);
+      if (okr) {
+        followUpSent[requestType] = true;
+        showFollowUpStatus(FOLLOW_UP_COPY[requestType], "ok");
+      } else {
+        showFollowUpStatus("We could not save that request just now. Please try again in a moment.", "info");
+      }
+    }).catch(function () {
+      if (timer) clearTimeout(timer);
+      setFollowUpBusy(false);
+      showFollowUpStatus("We could not save that request just now. Please try again in a moment.", "info");
+    });
+  }
+
+  function wireFollowUp() {
+    var cov = document.getElementById("rCoverageReview");
+    var quote = document.getElementById("rQuoteConversation");
+    if (cov) cov.addEventListener("click", function () { submitFollowUp("coverage_review"); });
+    if (quote) quote.addEventListener("click", function () { submitFollowUp("quote_conversation"); });
   }
 
   // ---- Global nav buttons ----
@@ -513,7 +659,19 @@
   wireCards();
   wireRankControls();
   wireGate();
-  wireModal();
+  wireFollowUp();
   wireNav();
   updateProgress(screenEl(ORDER[0]));   // intro active in markup; progress hidden
+
+  // Test-only entry (staging browser integration test). Active ONLY when a test
+  // seam is configured (PA_CONFIG.testResultId) AND the URL carries #pa-test-result.
+  // It jumps straight to the result screen and starts the REAL staging poller
+  // against the seeded result — never reachable in normal use.
+  (function testEntry() {
+    var c = cfg();
+    if (c.testResultId && c.testResultToken && /pa-test-result/.test(location.hash)) {
+      var idx = ORDER.indexOf("s-result");
+      if (idx >= 0) show(idx, "fwd");   // show() calls buildResult() → submitAndResolve()
+    }
+  })();
 })();
