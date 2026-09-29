@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assessment.css?v=2" />
+  <link rel="stylesheet" href="assessment.css?v=3" />
   <noscript><style>.ascreen{display:block !important;position:static !important;animation:none !important}.aprogress{display:none !important}</style></noscript>
 </head>
 <body>
@@ -320,29 +320,24 @@
 
         <p class="rboundary">This is a preliminary educational direction based only on what you shared. A quote conversation is where Morgan reviews the full context, existing coverage, affordability, carrier availability, underwriting, and required disclosures.</p>
 
-        <!-- 6 — Request a quote conversation (Lead Desk handoff / CTA) -->
+        <!-- 6 — Choose a next step (private follow-up request; token-gated) -->
+        <div class="rblock" id="rFollowUp" hidden>
+          <p class="rlabel">Choose your next step</p>
+          <p class="rmicro">No new information is collected. Your request is saved privately for Morgan to follow up — you stay in control of the pace.</p>
+          <div class="acontrols acontrols--result">
+            <button type="button" class="abtn abtn--primary" id="rCoverageReview" disabled>Request a Coverage Review <span class="arw" aria-hidden="true">→</span></button>
+            <button type="button" class="abtn abtn--ghost" id="rQuoteConversation" disabled>Request a Quote Conversation</button>
+          </div>
+          <p class="rfollowup__status" id="rFollowUpStatus" hidden role="status" aria-live="polite"></p>
+        </div>
+
         <div class="acontrols acontrols--result">
-          <button type="button" class="abtn abtn--primary" id="rRequest">Request a quote conversation <span class="arw" aria-hidden="true">→</span></button>
           <a class="atextlink" href="index.html">Return to the homepage</a>
         </div>
       </div>
     </section>
 
   </main>
-
-  <!-- Conversation-request placeholder modal (no data collected in this pass) -->
-  <div class="amodal" id="amodal" hidden>
-    <div class="amodal__scrim" data-close></div>
-    <div class="amodal__box" role="dialog" aria-modal="true" aria-labelledby="amodalTitle" tabindex="-1">
-      <button class="amodal__close" data-close aria-label="Close">×</button>
-      <p class="aeyebrow">Next step</p>
-      <h2 class="atitle atitle--xs" id="amodalTitle">Conversation request flow <em>coming next</em>.</h2>
-      <p class="alead">This is where you’ll be able to request a private protection conversation with Morgan. That step is being built next — nothing has been sent, and no additional information is collected here.</p>
-      <div class="acontrols acontrols--center">
-        <button type="button" class="abtn abtn--primary" data-close>Got it</button>
-      </div>
-    </div>
-  </div>
 
   <footer class="afooter">
     <p>© Morgan Branch the Broker · <a href="privacy.html">Privacy Policy</a> · <a href="index.html">Home</a></p>
@@ -356,12 +351,17 @@
       apiBase: "https://s74stha6hd.execute-api.us-east-1.amazonaws.com",
       submitPath: "/v1/protection-assessments",
       statusPath: "/v1/protection-assessments/",
+      followUpSuffix: "/follow-up",
       assessmentVersion: "protection-assessment-web-2026-09",
-      pollTries: 6,
-      pollIntervalMs: 1500
+      // Bounded, resilient polling: keep polling (per-request abort at getTimeoutMs)
+      // until the AI reflection arrives or the overall deadline is reached, then show
+      // a plain recovery state. The loader is never left spinning.
+      pollIntervalMs: 2500,
+      getTimeoutMs: 8000,
+      pollDeadlineMs: 75000
     };
   </script>
-  <script src="assessment-rules.js?v=3"></script>
-  <script src="assessment.js?v=3"></script>
+  <script src="assessment-rules.js?v=4"></script>
+  <script src="assessment.js?v=4"></script>
 </body>
 </html>
