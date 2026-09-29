@@ -124,8 +124,28 @@ async function loadResult(page, cfg) {
 async function runStaging(mode) {
   const apiBase = process.env.PA_API_BASE, resultId = process.env.PA_RESULT_ID, token = process.env.PA_RESULT_TOKEN;
   assert(!!apiBase && !!resultId && !!token, "staging seed env present (PA_API_BASE/PA_RESULT_ID/PA_RESULT_TOKEN)");
+
+  // Explicitly verify the REAL staging CORS grant for the production page origin.
+  // (The live page runs on https://morganbranch.co, which the API allows; the local
+  // harness serves from localhost, so below we relax only the browser's same-origin
+  // gate — the GET request/response themselves stay real.)
+  const pre = await fetch(`${apiBase}/v1/protection-assessments/${encodeURIComponent(resultId)}`, {
+    method: "OPTIONS",
+    headers: { origin: "https://morganbranch.co", "access-control-request-method": "GET", "access-control-request-headers": "x-result-token" },
+  });
+  const acao = pre.headers.get("access-control-allow-origin");
+  const acah = (pre.headers.get("access-control-allow-headers") || "").toLowerCase();
+  assert(acao === "https://morganbranch.co", `staging CORS allows the production origin (got ${acao})`);
+  assert(acah.includes("x-result-token"), "staging CORS allows the x-result-token header");
+
   const srv = staticServer(ROOT); const port = await listen(srv);
-  const browser = await chromium.launch({ args: ["--no-sandbox"] });
+  // --disable-web-security lets the localhost harness read the REAL cross-origin
+  // staging response; the network request + JSON are unchanged and real.
+  // --disable-web-security: read the REAL cross-origin staging response from a
+  //   localhost harness (request/response stay real).
+  // --ignore-certificate-errors: tolerate an intercepting proxy CA in some CI/dev
+  //   networks; irrelevant to the real page and does not alter the staging response.
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-web-security", "--ignore-certificate-errors"] });
   try {
     const page = await browser.newPage();
     const leaks = attachConsoleGuard(page, [token, "synthetic", "example.com", "Synthetic"]);
