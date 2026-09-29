@@ -11,8 +11,10 @@
 //   complete   — same seed, now completed on staging; assert the loader is REPLACED
 //                by the validated AI reflection paragraphs (status=complete).
 //   statematrix— drive complete / fallback / expired / timeout against a LOCAL stub
-//                that speaks the identical GET contract; assert every terminal state
-//                replaces the loader and the loader never spins forever.
+//                that speaks the identical GET contract; assert the loader never
+//                spins forever, that ONLY a validated AI reflection renders, and that
+//                fallback / expired / timeout HIDE the personalized-summary block
+//                (no generic fallback summary is ever substituted).
 //
 // Every mode also asserts the browser console never leaks the result token, the
 // visitor email, the last name, or a raw API payload.
@@ -184,16 +186,14 @@ async function runStateMatrix() {
       const page = await browser.newPage();
       const leaks = attachConsoleGuard(page, ["seed-secret-xyz"]);
       await loadResult(page, { apiBase: `http://127.0.0.1:${stubPort}`, statusPath: "/v1/protection-assessments/", testResultId: "stub-1", testResultToken: "t", pollIntervalMs: 800, getTimeoutMs: 4000, pollDeadlineMs: 15000, __port: sitePort });
-      const want = status === "complete" ? "complete" : "fallback";
-      await page.waitForFunction((w) => document.querySelector("#rSummaryState")?.getAttribute("data-state") === w, want, { timeout: 12000 });
-      assert(await page.locator("#rPending").isHidden(), `loader replaced for status=${status}`);
-      const paras = await page.locator("#rReflection .rreflection__p").count();
-      assert(paras >= 1, `terminal reflection rendered for status=${status}`);
-      if (status === "expired") assert(await page.locator("#rNotice").isVisible(), "expired shows a plain recovery notice");
-
-      // On a real (complete/fallback) result the two follow-up CTAs are usable and
-      // clicking one shows the exact on-page confirmation; a repeat click is idempotent.
       if (status === "complete") {
+        // A validated AI reflection REPLACES the loader.
+        await page.waitForFunction(() => document.querySelector("#rSummaryState")?.getAttribute("data-state") === "complete", null, { timeout: 12000 });
+        assert(await page.locator("#rPending").isHidden(), "loader replaced for status=complete");
+        const paras = await page.locator("#rReflection .rreflection__p").count();
+        assert(paras >= 1, "validated AI reflection rendered for status=complete");
+        // The two follow-up CTAs are usable; a click shows the exact confirmation and
+        // a repeat click is idempotent.
         assert(await page.locator("#rFollowUp").isVisible(), "follow-up CTA block revealed");
         assert(!(await page.locator("#rCoverageReview").isDisabled()), "Coverage Review CTA enabled");
         assert(!(await page.locator("#rQuoteConversation").isDisabled()), "Quote Conversation CTA enabled");
@@ -206,6 +206,21 @@ async function runStateMatrix() {
         await page.locator("#rQuoteConversation").click();
         await page.waitForFunction(() => document.querySelector("#rFollowUpStatus")?.textContent?.includes("Quote Conversation request has been saved"), null, { timeout: 6000 });
         assert(true, "Quote Conversation click → 'Your Quote Conversation request has been saved.'");
+      } else {
+        // fallback + expired: NO generic summary is substituted. The whole
+        // personalized-summary block is hidden, no reflection paragraph renders, and
+        // the loader is never left spinning.
+        await page.waitForFunction(() => document.querySelector("#rSummaryBlock")?.hasAttribute("hidden"), null, { timeout: 12000 });
+        assert(await page.locator("#rSummaryBlock").isHidden(), `personalized-summary block hidden for status=${status}`);
+        assert(await page.locator("#rPending").isHidden(), `loader hidden for status=${status}`);
+        assert((await page.locator("#rReflection .rreflection__p").count()) === 0, `no generic fallback reflection rendered for status=${status}`);
+        if (status === "fallback") {
+          // A real fallback record still enables the next-step CTAs (Lead Desk attach).
+          assert(await page.locator("#rFollowUp").isVisible(), "follow-up CTA block revealed on fallback");
+          assert(!(await page.locator("#rCoverageReview").isDisabled()), "Coverage Review CTA enabled on fallback");
+        } else {
+          assert(await page.locator("#rNotice").isVisible(), "expired shows a plain recovery notice");
+        }
       }
       assert(leaks.length === 0, `no console leak for status=${status}`);
       await page.close(); stub.close();
@@ -214,8 +229,9 @@ async function runStateMatrix() {
     const stub = stubServer({ status: "pending" }); const stubPort = await listen(stub);
     const page = await browser.newPage();
     await loadResult(page, { apiBase: `http://127.0.0.1:${stubPort}`, statusPath: "/v1/protection-assessments/", testResultId: "stub-1", testResultToken: "t", pollIntervalMs: 500, getTimeoutMs: 2000, pollDeadlineMs: 3000, __port: sitePort });
-    await page.waitForFunction(() => { const s = document.querySelector("#rSummaryState")?.getAttribute("data-state"); return s === "fallback" || s === "complete"; }, null, { timeout: 12000 });
-    assert(await page.locator("#rPending").isHidden(), "loader never spins forever — timeout reaches a terminal recovery state");
+    await page.waitForFunction(() => document.querySelector("#rSummaryBlock")?.hasAttribute("hidden"), null, { timeout: 12000 });
+    assert(await page.locator("#rPending").isHidden(), "loader never spins forever — timeout hides the summary block (no generic substitute)");
+    assert(await page.locator("#rSummaryBlock").isHidden(), "timeout hides the personalized-summary block");
     assert(await page.locator("#rNotice").isVisible(), "timeout shows a plain recovery notice");
     await page.close(); stub.close();
   } finally { await browser.close(); site.close(); }

@@ -547,6 +547,10 @@ em { font-family: var(--serif); font-style: italic; }
   margin-top: 4px;
 }
 .rblock:first-of-type { margin-top: 30px; }
+/* When a block is hidden (e.g. the personalized-summary block with no validated AI
+   reflection), it must fully collapse — explicit rule so no future display value
+   can outrank the UA [hidden] rule. */
+.rblock[hidden] { display: none; }
 
 .rlabel {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
