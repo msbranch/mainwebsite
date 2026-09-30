@@ -335,7 +335,6 @@
   function renderReflection(paragraphs) {
     var pending = document.getElementById("rPending");
     var wrap = document.getElementById("rReflection");
-    var note = document.getElementById("rReflectionNote");
     var stateEl = document.getElementById("rSummaryState");
     if (!wrap) return;
     wrap.innerHTML = "";
@@ -347,7 +346,6 @@
     });
     if (pending) pending.hidden = true;
     wrap.hidden = false;
-    if (note) note.hidden = false;
     if (stateEl) stateEl.setAttribute("data-state", "complete");
   }
 
