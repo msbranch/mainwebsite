@@ -547,9 +547,11 @@
           if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
           if (status === "complete" && data.reflection && data.reflection.source === "ai" && data.reflection.paragraphs && data.reflection.paragraphs.length) {
             finishSummary(data.reflection.paragraphs);
-          } else if (status === "fallback" || status === "complete") {
-            // Fallback (validated out) OR a complete result without a validated AI
-            // reflection → show NO generic summary. Hide the block; keep the CTAs.
+          } else if (status === "reflection_unavailable" || status === "fallback" || status === "complete") {
+            // Direct-engine reflection_unavailable, legacy fallback, or a complete
+            // result without a validated AI reflection → TERMINAL: show NO generic
+            // summary. Hide the block; keep the deterministic sections and the CTAs.
+            // No validator code, error, fallback, or "explanation coming later" text.
             finishNoReflection();
           } else if (status === "expired") {
             finishExpired();

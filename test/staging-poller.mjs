@@ -181,7 +181,7 @@ async function runStateMatrix() {
   const site = staticServer(ROOT); const sitePort = await listen(site);
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   try {
-    for (const status of ["complete", "fallback", "expired"]) {
+    for (const status of ["complete", "fallback", "reflection_unavailable", "expired"]) {
       const stub = stubServer({ status }); const stubPort = await listen(stub);
       const page = await browser.newPage();
       const leaks = attachConsoleGuard(page, ["seed-secret-xyz"]);
@@ -207,17 +207,19 @@ async function runStateMatrix() {
         await page.waitForFunction(() => document.querySelector("#rFollowUpStatus")?.textContent?.includes("Quote Conversation request has been saved"), null, { timeout: 6000 });
         assert(true, "Quote Conversation click → 'Your Quote Conversation request has been saved.'");
       } else {
-        // fallback + expired: NO generic summary is substituted. The whole
-        // personalized-summary block is hidden, no reflection paragraph renders, and
-        // the loader is never left spinning.
+        // fallback / reflection_unavailable / expired: NO generic summary is
+        // substituted. The whole personalized-summary block is hidden, no reflection
+        // paragraph renders, and the loader is never left spinning.
         await page.waitForFunction(() => document.querySelector("#rSummaryBlock")?.hasAttribute("hidden"), null, { timeout: 12000 });
         assert(await page.locator("#rSummaryBlock").isHidden(), `personalized-summary block hidden for status=${status}`);
         assert(await page.locator("#rPending").isHidden(), `loader hidden for status=${status}`);
-        assert((await page.locator("#rReflection .rreflection__p").count()) === 0, `no generic fallback reflection rendered for status=${status}`);
-        if (status === "fallback") {
-          // A real fallback record still enables the next-step CTAs (Lead Desk attach).
-          assert(await page.locator("#rFollowUp").isVisible(), "follow-up CTA block revealed on fallback");
-          assert(!(await page.locator("#rCoverageReview").isDisabled()), "Coverage Review CTA enabled on fallback");
+        assert((await page.locator("#rReflection .rreflection__p").count()) === 0, `no generic reflection rendered for status=${status}`);
+        if (status === "fallback" || status === "reflection_unavailable") {
+          // A real terminal record still enables the next-step CTAs (Lead Desk attach).
+          assert(await page.locator("#rFollowUp").isVisible(), `follow-up CTA block revealed on ${status}`);
+          assert(!(await page.locator("#rCoverageReview").isDisabled()), `Coverage Review CTA enabled on ${status}`);
+          // No "explanation will appear later" / validator / error / fallback text.
+          assert(!(await page.locator("#rNotice").isVisible()), `no recovery/technical notice on ${status}`);
         } else {
           assert(await page.locator("#rNotice").isVisible(), "expired shows a plain recovery notice");
         }
