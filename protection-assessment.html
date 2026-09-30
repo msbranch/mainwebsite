@@ -299,8 +299,10 @@
           <ul class="rfocus" id="rFocus"></ul>
         </div>
 
-        <!-- 5 — Your personalized summary (validated AI reflection or approved fallback) -->
-        <div class="rblock">
+        <!-- 5 — Your personalized summary (validated AI reflection ONLY). When no
+             validated AI reflection is available, this whole block is hidden — no
+             generic fallback summary is ever shown as a substitute. -->
+        <div class="rblock" id="rSummaryBlock">
           <p class="rlabel">Your personalized summary</p>
           <div id="rSummaryState" data-state="pending">
             <div class="rpending" id="rPending" role="status" aria-live="polite">

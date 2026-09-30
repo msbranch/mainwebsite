@@ -11,7 +11,7 @@ straight to the result screen and starts the real poller against a seeded result
 
 | Mode | What it proves | Needs |
 |---|---|---|
-| `statematrix` | complete / fallback / expired / timeout each **replace** the loader (never an indefinite spinner); the two follow-up CTAs click through to their exact confirmation copy and repeat clicks are idempotent; nothing sensitive is logged. | nothing external (a local stub speaks the GET contract) |
+| `statematrix` | only a validated AI reflection (`complete`) renders; `fallback` / `expired` / `timeout` **hide** the personalized-summary block entirely (no generic fallback summary is ever substituted) and never leave an indefinite spinner; the two follow-up CTAs click through to their exact confirmation copy and repeat clicks are idempotent; nothing sensitive is logged. | nothing external (a local stub speaks the GET contract) |
 | `pending` | against the **real staging** API, a seeded pending result shows the loader while `status=pending`. | `PA_API_BASE`, `PA_RESULT_ID`, `PA_RESULT_TOKEN` |
 | `complete` | against the **real staging** API, once the seeded result is `complete` the loader is replaced by the validated AI reflection paragraphs. | same env |
 

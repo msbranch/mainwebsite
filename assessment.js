@@ -275,13 +275,9 @@
     "I am not sure whether I have coverage": "You are not sure whether you have coverage."
   };
 
-  // Approved local fallback summary (digit-free), used only if the service is
-  // unreachable so the personalized-summary block is never empty or an error.
-  var LOCAL_FALLBACK = [
-    "Thank you for taking the time to share what your income helps carry. What you told us is enough to see a clear starting point — a direction worth talking through, not a decision to make on your own.",
-    "The next useful step is a short, no-pressure conversation. That is where the full picture gets reviewed together: the responsibilities you named, anything already in place, what feels affordable, and the questions you still have. Nothing here is a quote, an application, or a recommendation about any specific policy.",
-    "When you are ready, you can request that conversation. There is no obligation, and you are always in control of the pace."
-  ];
+  // NOTE: there is no generic "approved fallback" summary. The personalized-summary
+  // block shows ONLY a validated AI reflection; when none is available it is hidden
+  // entirely (hideSummaryBlock), never replaced with a generic substitute.
 
   function cfg() { return (window.PA_CONFIG || {}); }
 
@@ -334,7 +330,9 @@
 
   function renderTimingNote(note) { setText("rTimingNote", note || ""); }
 
-  function renderReflection(paragraphs, isFallback) {
+  // Render the VALIDATED AI reflection (source "ai"). Only ever called for a real
+  // AI reflection — there is no generic fallback rendering path.
+  function renderReflection(paragraphs) {
     var pending = document.getElementById("rPending");
     var wrap = document.getElementById("rReflection");
     var note = document.getElementById("rReflectionNote");
@@ -350,7 +348,17 @@
     if (pending) pending.hidden = true;
     wrap.hidden = false;
     if (note) note.hidden = false;
-    if (stateEl) stateEl.setAttribute("data-state", isFallback ? "fallback" : "complete");
+    if (stateEl) stateEl.setAttribute("data-state", "complete");
+  }
+
+  // No validated AI reflection → hide the entire personalized-summary block (label,
+  // loader, reflection area, note). The deterministic result sections remain and no
+  // generic fallback summary is ever shown as a substitute.
+  function hideSummaryBlock() {
+    var block = document.getElementById("rSummaryBlock");
+    if (block) block.hidden = true;
+    var pending = document.getElementById("rPending");
+    if (pending) pending.hidden = true;   // never leave the loader spinning
   }
 
   function showNotice(msg) {
@@ -423,24 +431,34 @@
   // spinning and can never be replaced twice.
   var summaryResolved = false;
 
-  function finishSummary(paragraphs, isFallback) {
+  // A validated AI reflection arrived → show it.
+  function finishSummary(paragraphs) {
     if (summaryResolved) return;
     summaryResolved = true;
-    renderReflection(paragraphs, isFallback);
+    renderReflection(paragraphs);
+    revealFollowUp();
+  }
+  // No validated AI reflection (server fallback, no token, or service unreachable) →
+  // hide the summary block; keep the deterministic direction and the next-step CTAs.
+  function finishNoReflection() {
+    if (summaryResolved) return;
+    summaryResolved = true;
+    hideSummaryBlock();
     revealFollowUp();
   }
   function finishExpired() {
     if (summaryResolved) return;
     summaryResolved = true;
+    hideSummaryBlock();
     showNotice("This result has expired. You can begin the assessment again whenever you are ready.");
-    renderReflection(LOCAL_FALLBACK, true);
   }
   function finishTimedOut() {
     if (summaryResolved) return;
     summaryResolved = true;
-    // Plain recovery state — the loader is always replaced, never left spinning.
-    showNotice("Your personalized summary is taking a little longer than usual. The direction above is ready now, and you can request a conversation whenever you like.");
-    renderReflection(LOCAL_FALLBACK, true);
+    // Plain recovery state — the loader is always replaced, never left spinning, and
+    // no generic summary is substituted for the AI reflection.
+    hideSummaryBlock();
+    showNotice("The direction above is ready now, and you can request a conversation whenever you like.");
     revealFollowUp();
   }
 
@@ -483,13 +501,13 @@
         resultContext.token = token;
         startPolling(resultId, token);
       } else {
-        finishSummary(LOCAL_FALLBACK, true);   // no token → approved fallback (no CTA target)
+        finishNoReflection();   // no token → no CTA target and no AI reflection
       }
     }).catch(function () {
       if (timer) clearTimeout(timer);
-      // Service unreachable / not enabled: keep the deterministic direction and
-      // show the approved fallback summary. Never expose an error or technical detail.
-      finishSummary(LOCAL_FALLBACK, true);
+      // Service unreachable / not enabled: keep the deterministic direction and hide
+      // the summary block. Never show a generic summary or expose a technical detail.
+      finishNoReflection();
     });
   }
 
@@ -527,10 +545,14 @@
           var status = data && data.status;
           if (data && data.direction) renderDirection(data.direction);
           if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
-          if (status === "complete" && data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) {
-            finishSummary(data.reflection.paragraphs, false);
-          } else if (status === "fallback") {
-            finishSummary((data.reflection && data.reflection.paragraphs && data.reflection.paragraphs.length) ? data.reflection.paragraphs : LOCAL_FALLBACK, true);
+          if (status === "complete" && data.reflection && data.reflection.source === "ai" && data.reflection.paragraphs && data.reflection.paragraphs.length) {
+            finishSummary(data.reflection.paragraphs);
+          } else if (status === "reflection_unavailable" || status === "fallback" || status === "complete") {
+            // Direct-engine reflection_unavailable, legacy fallback, or a complete
+            // result without a validated AI reflection → TERMINAL: show NO generic
+            // summary. Hide the block; keep the deterministic sections and the CTAs.
+            // No validator code, error, fallback, or "explanation coming later" text.
+            finishNoReflection();
           } else if (status === "expired") {
             finishExpired();
           } else {
