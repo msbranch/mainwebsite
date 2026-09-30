@@ -424,6 +424,10 @@
   // completed/fallback result (a real record the Lead Desk can attach to) enables
   // the CTAs.
   var resultContext = { resultId: null, token: null };
+  // Opaque Lead-Desk quote-access token, relayed on the result GET. When present it
+  // turns "Request a Free Quote" into a real route to the secure, server-backed
+  // request form (carried in the URL FRAGMENT, never a query param or log).
+  var quoteAccessToken = null;
   // The personalized-summary block resolves EXACTLY ONCE. Every polling path funnels
   // through a terminal helper guarded by this flag, so the loader can never be left
   // spinning and can never be replaced twice.
@@ -543,6 +547,7 @@
           var status = data && data.status;
           if (data && data.direction) renderDirection(data.direction);
           if (data && typeof data.timingNote === "string") renderTimingNote(data.timingNote);
+          if (data && data.quoteAccess && data.quoteAccess.token) quoteAccessToken = data.quoteAccess.token;
           if (status === "complete" && data.reflection && data.reflection.source === "ai" && data.reflection.paragraphs && data.reflection.paragraphs.length) {
             finishSummary(data.reflection.paragraphs);
           } else if (status === "reflection_unavailable" || status === "fallback" || status === "complete") {
@@ -656,7 +661,18 @@
     var cov = document.getElementById("rCoverageReview");
     var quote = document.getElementById("rQuoteConversation");
     if (cov) cov.addEventListener("click", function () { submitFollowUp("coverage_review"); });
-    if (quote) quote.addEventListener("click", function () { submitFollowUp("quote_conversation"); });
+    if (quote) quote.addEventListener("click", function () {
+      // Real route to the secure, server-backed Request-a-Quote form when a quote
+      // access token + a configured app base are present; the opaque token rides in
+      // the URL FRAGMENT (never a query param). Otherwise fall back to the private
+      // follow-up request (so the button always does something useful).
+      var base = (cfg().quoteAppBase || "").replace(/\/+$/, "");
+      if (quoteAccessToken && base) {
+        window.location.href = base + "/request-quote.html#t=" + encodeURIComponent(quoteAccessToken);
+        return;
+      }
+      submitFollowUp("quote_conversation");
+    });
   }
 
   // ---- Global nav buttons ----
