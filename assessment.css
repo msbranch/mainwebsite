@@ -410,6 +410,17 @@ em { font-family: var(--serif); font-style: italic; }
 }
 .abtn--primary:disabled:active { transform: none; }
 
+/* Powder-blue brand variant (soft blue) — same shape as --primary. */
+.abtn--pow { background: var(--pow); color: var(--ink); }
+.abtn--pow:hover { background: #a6c9e0; }
+.abtn--pow:disabled {
+  background: #e8eff5;
+  color: #9fb0bd;
+  cursor: not-allowed;
+  opacity: 1;
+}
+.abtn--pow:disabled:active { transform: none; }
+
 .abtn--ghost {
   background: transparent;
   color: var(--muted);

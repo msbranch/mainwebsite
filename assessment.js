@@ -581,7 +581,7 @@
   var followUpSent = { coverage_review: false, quote_conversation: false };
   var FOLLOW_UP_COPY = {
     coverage_review: "Your Coverage Review request has been saved.",
-    quote_conversation: "Your Quote Conversation request has been saved."
+    quote_conversation: "Your Free Quote request has been saved."
   };
 
   // The CTAs become usable only once a real result exists for the Lead Desk to
