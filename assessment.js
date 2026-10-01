@@ -428,6 +428,12 @@
   // turns "Request a Free Quote" into a real route to the secure, server-backed
   // request form (carried in the URL FRAGMENT, never a query param or log).
   var quoteAccessToken = null;
+  // The result id + browser token, kept so the quote button can re-fetch the result
+  // once more at click time. The quote-access token can attach a short moment AFTER
+  // the reflection status flips to terminal, so a single poll may resolve the summary
+  // before the token is present; a click-time re-fetch grabs the freshest token.
+  var lastResultId = null;
+  var lastResultToken = null;
   // The personalized-summary block resolves EXACTLY ONCE. Every polling path funnels
   // through a terminal helper guarded by this flag, so the loader can never be left
   // spinning and can never be replaced twice.
@@ -518,6 +524,7 @@
   // render. It can never spin forever, and it never writes tokens, emails, payloads,
   // or technical errors to the browser console.
   function startPolling(resultId, token) {
+    lastResultId = resultId; lastResultToken = token;   // kept for the click-time token re-fetch
     var c = cfg();
     var deadline = Date.now() + (c.pollDeadlineMs || 75000);
     var interval = c.pollIntervalMs || 2500;
@@ -667,10 +674,26 @@
       // the URL FRAGMENT (never a query param). Otherwise fall back to the private
       // follow-up request (so the button always does something useful).
       var base = (cfg().quoteAppBase || "").replace(/\/+$/, "");
-      if (quoteAccessToken && base) {
-        window.location.href = base + "/request-quote.html#t=" + encodeURIComponent(quoteAccessToken);
+      function routeTo(tok) { window.location.href = base + "/request-quote.html#t=" + encodeURIComponent(tok); }
+
+      if (base && quoteAccessToken) { routeTo(quoteAccessToken); return; }
+
+      // No token captured yet but a base is configured: the token can attach a moment
+      // after the reflection resolves, so fetch the result ONE more time at click time
+      // to grab the freshest token before deciding. Fall back only if it is truly absent.
+      if (base && lastResultId && lastResultToken) {
+        var c = cfg();
+        var url = (c.apiBase || "") + (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(lastResultId);
+        fetch(url, { method: "GET", headers: { "x-result-token": lastResultToken } })
+          .then(function (res) { return res.ok ? res.json() : null; })
+          .then(function (data) {
+            if (data && data.quoteAccess && data.quoteAccess.token) { quoteAccessToken = data.quoteAccess.token; routeTo(quoteAccessToken); }
+            else { submitFollowUp("quote_conversation"); }
+          })
+          .catch(function () { submitFollowUp("quote_conversation"); });
         return;
       }
+
       submitFollowUp("quote_conversation");
     });
   }
