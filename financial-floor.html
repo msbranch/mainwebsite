@@ -5,33 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#121116" />
   <title>The Financial Floor — Morgan Branch the Broker</title>
-  <meta name="description" content="The Financial Floor is a private monthly money snapshot by Morgan Branch the Broker." />
+  <meta name="description" content="A private, human-led money-clarity add-on prepared by Morgan for your scheduled conversation." />
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="floor.css?v=3" />
   <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
+  <style>
+    /* Single-purpose add-on page: non-clickable brand identifier (no nav). */
+    .ff-head { border-bottom: 1px solid var(--line); background: var(--paper); }
+    .ff-head__inner { max-width: 1120px; margin: 0 auto; padding: 22px 24px; }
+    .ff-head__kicker { display: block; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--violet, #6b5a97); }
+    .ff-head__word { display: block; font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink); margin-top: 4px; }
+    /* Three short privacy assurances */
+    .ff-points { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
+    .ff-points li { font-family: var(--sans); font-size: 14px; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+    .ff-points li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--lav); flex: 0 0 auto; }
+    .ff-scope { margin-top: 26px; font-size: 13px; line-height: 1.6; color: var(--body); max-width: 60ch; }
+    /* Price + add-on action (on the dark band) */
+    .ff-price { margin: 30px 0 8px; }
+    .ff-price__label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lav); }
+    .ff-price__amount { font-family: var(--serif); font-size: clamp(48px, 9vw, 72px); line-height: 1; color: #fff; margin-top: 8px; }
+    .ff-scopeline { color: rgba(255,255,255,0.82); font-size: 15px; line-height: 1.6; max-width: 54ch; margin: 18px auto 0; }
+    .ff-note { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; max-width: 54ch; margin: 12px auto 26px; }
+    .ff-disclose { font-size: 12.5px; line-height: 1.65; color: var(--body); max-width: 72ch; margin: 0 auto; }
+  </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="floor-nav">
-    <div class="floor-nav__inner">
-      <a href="index.html" class="brand">
-        <span class="brand__kicker">Morgan Branch the Broker</span>
-        <span class="brand__word">The Financial <em>Floor</em></span>
-      </a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="floor-nav__links" id="navLinks">
-        <a href="index.html">Home</a>
-        <a href="pillars.html">Building Blocks</a>
-        <a href="about.html">About</a>
-        <a href="financial-floor-app/" class="signin">Check it out</a>
-      </div>
+  <!-- Non-clickable brand identifier (single-purpose add-on page: no navigation) -->
+  <header class="ff-head">
+    <div class="ff-head__inner">
+      <span class="ff-head__kicker">Morgan Branch the Broker</span>
+      <span class="ff-head__word">The Financial Floor</span>
     </div>
-  </nav>
+  </header>
 
   <main>
 
@@ -41,25 +50,23 @@
         <div class="hero__grid">
           <div class="hero__copy">
             <div class="hero__eyebrow reveal">
-              <span class="kicker">A Private Monthly Money Snapshot</span>
-              <span class="badge">Now in prototype</span>
+              <span class="kicker">A Private Money-Clarity Add-On</span>
             </div>
-            <h1 class="hero__title reveal reveal--d1">See what your money is <em class="italic-accent">doing.</em></h1>
-            <p class="hero__body reveal reveal--d2">The Financial Floor turns the statement you already have into a clear monthly picture of actual income, fixed expenses, variable expenses, and what remains after the month.</p>
+            <h1 class="hero__title reveal reveal--d1">See what your month was <em class="italic-accent">carrying.</em></h1>
+            <p class="hero__body reveal reveal--d2">The Financial Floor is a private, human-led review of one completed month. Morgan turns the information you choose to share into a clear picture of actual income, fixed expenses, variable expenses, and what remained after the month.</p>
             <div class="hero__cta reveal reveal--d3">
-              <a href="financial-floor-app/" class="btn btn--dark">
-                Check it out
+              <a href="#receive" class="btn btn--dark">
+                See what is included
                 <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </a>
-              <span class="hero__trust">No bank connection. No cost. No judgment.</span>
+              <span class="hero__trust">No bank connection. No judgment. No requirement to add it to your conversation.</span>
             </div>
-            <p class="hero__preview reveal reveal--d3"><a href="financial-floor-app/">A private, illustrative walkthrough — no real data, nothing to upload.</a></p>
           </div>
 
           <div class="hero__aside reveal reveal--d2">
             <div class="example-wrap">
               <div class="example">
-                <p class="example__kicker">Your Month, Clearly</p>
+                <p class="example__kicker">Your Month, Prepared Clearly</p>
                 <div class="example__status"><span class="example__dot"></span> In the Black</div>
                 <div class="example__figure">$184</div>
                 <div class="example__figure-label">Net Income</div>
@@ -69,9 +76,37 @@
                   <div class="example__row"><span>Fixed expenses</span><b>$2,450</b></div>
                   <div class="example__row"><span>Variable expenses</span><b>$1,366</b></div>
                 </div>
-                <p class="example__note">Illustrative example. Your result reflects the month you confirm.</p>
+                <p class="example__note">Illustrative example. Morgan prepares your snapshot from the completed month and information you choose to share.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU RECEIVE -->
+    <section id="receive" class="section section--white">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker reveal">What You Receive</p>
+          <h2 class="section-title reveal reveal--d1">One month. One clear <em class="italic-accent">picture.</em></h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <h3 class="step__title">A monthly money snapshot</h3>
+            <p class="step__body">A simple view of actual income, total expenses, what remained after the month, and the net-income margin.</p>
+          </div>
+          <div class="step reveal reveal--d1">
+            <h3 class="step__title">Expenses organized clearly</h3>
+            <p class="step__body">Morgan organizes the selected activity into practical expense categories and separates regular commitments from expenses that can change month to month.</p>
+          </div>
+          <div class="step reveal reveal--d2">
+            <h3 class="step__title">Your fixed and variable view</h3>
+            <p class="step__body">See the difference between recurring responsibilities and the expenses that move with use, timing, or choice.</p>
+          </div>
+          <div class="step reveal reveal--d3">
+            <h3 class="step__title">A conversation with context</h3>
+            <p class="step__body">Bring the finished snapshot into your scheduled conversation so the questions you want to clarify have a clearer monthly picture behind them.</p>
           </div>
         </div>
       </div>
@@ -82,28 +117,28 @@
       <div class="container">
         <div class="section-head">
           <p class="kicker reveal">How It Works</p>
-          <h2 class="section-title reveal reveal--d1">One month. One clear <em class="italic-accent">picture.</em></h2>
+          <h2 class="section-title reveal reveal--d1">Prepared with care. Reviewed in plain <em class="italic-accent">English.</em></h2>
         </div>
         <div class="steps">
           <div class="step reveal">
             <div class="step__num">01</div>
-            <h3 class="step__title">Report actual income</h3>
-            <p class="step__body">Start with the money you actually received during the month.</p>
+            <h3 class="step__title">Add it to your conversation</h3>
+            <p class="step__body">Choose the Financial Floor add-on when you schedule your Purchase Consultation.</p>
           </div>
           <div class="step reveal reveal--d1">
             <div class="step__num">02</div>
-            <h3 class="step__title">Add statements you choose</h3>
-            <p class="step__body">Upload digital bank or card PDFs. Never connect an account.</p>
+            <h3 class="step__title">Share only what you choose</h3>
+            <p class="step__body">After your appointment is confirmed, you receive private instructions for sharing the completed-month statement or statements you choose to include. No bank login is requested.</p>
           </div>
           <div class="step reveal reveal--d2">
             <div class="step__num">03</div>
-            <h3 class="step__title">Confirm the expenses</h3>
-            <p class="step__body">Separate fixed expenses from variable expenses and correct every line.</p>
+            <h3 class="step__title">Morgan prepares the snapshot</h3>
+            <p class="step__body">Morgan organizes the selected information, separates fixed and variable expenses, and prepares the Monthly Money Snapshot before the conversation.</p>
           </div>
           <div class="step reveal reveal--d3">
             <div class="step__num">04</div>
-            <h3 class="step__title">Read your floor</h3>
-            <p class="step__body">See net income, margin, and a clear voluntary education route.</p>
+            <h3 class="step__title">Review the picture together</h3>
+            <p class="step__body">Use the conversation to understand what the month carried and the questions you want to take into the next step.</p>
           </div>
         </div>
       </div>
@@ -116,39 +151,38 @@
           <div class="reveal">
             <svg class="privacy__lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10.5" rx="1.5"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3"/></svg>
             <p class="kicker">Private by Design</p>
-            <h2 class="privacy__title">Your statement is not a sales <em>script.</em></h2>
+            <h2 class="privacy__title">Your information is not a sales <em>script.</em></h2>
           </div>
           <div class="reveal reveal--d1">
-            <p class="privacy__body">You choose the PDFs you include. Your raw documents remain separate from the education layer. You can return to your saved history or delete it yourself.</p>
-            <a href="#PRIVACY_URL" class="privacy__link">
-              How privacy works
-              <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
+            <p class="privacy__body">You decide whether to add the Financial Floor and which completed-month statements to share. The information is used to prepare the requested snapshot, not to pressure you into a product decision.</p>
+            <ul class="ff-points">
+              <li>No bank connection</li>
+              <li>You choose what to share</li>
+              <li>Separate from the insurance decision</li>
+            </ul>
+            <p class="ff-scope">The Financial Floor is a separate money-clarity service. It does not determine whether a quote, premium, or policy is right for you, and it is not a financial plan or investment, tax, legal, credit, debt, or insurance advice.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA / Waitlist -->
-    <section id="waitlist" class="section section--ink cta">
+    <!-- ADD IT TO YOUR CONVERSATION -->
+    <section class="section section--ink cta">
       <div class="container">
-        <p class="kicker reveal">Begin with Clarity</p>
-        <h2 class="cta__title reveal reveal--d1">Build your floor before you try to build <em>wealth.</em></h2>
-        <p class="cta__sub reveal reveal--d2">The Financial Floor is opening soon. Join the waitlist and you'll be first to know when it's ready.</p>
-        <form id="waitlistForm" class="waitlist-form reveal reveal--d2" data-endpoint="#FLOOR_WAITLIST_URL" novalidate>
-          <input type="text" id="wlName" name="first_name" class="waitlist-input" placeholder="First name" aria-label="First name" autocomplete="given-name" required />
-          <input type="email" id="wlEmail" name="email" class="waitlist-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
-          <input type="text" id="wlHp" name="website" class="waitlist-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <button type="submit" class="btn btn--light">
-            Join the waitlist
+        <p class="kicker reveal">Add It to Your Conversation</p>
+        <h2 class="cta__title reveal reveal--d1">Bring a clearer monthly picture into the <em>room.</em></h2>
+        <div class="ff-price reveal reveal--d2">
+          <div class="ff-price__label">The Financial Floor Add-On</div>
+          <div class="ff-price__amount">$67</div>
+        </div>
+        <p class="ff-scopeline reveal reveal--d2">One completed month. Up to two selected statements. A prepared Monthly Money Snapshot. The Financial Floor portion of your scheduled conversation.</p>
+        <p class="ff-note reveal reveal--d2">Scheduling reserves your conversation. Morgan provides the private statement-sharing and service-payment details before any review begins.</p>
+        <div class="hero__cta reveal reveal--d3" style="justify-content:center">
+          <a href="#" id="addFloorCta" class="btn btn--light">
+            Add the Financial Floor to My Consultation — $67
             <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-        </form>
-        <p id="waitlistMsg" class="waitlist-msg" role="status" aria-live="polite"></p>
-        <p class="cta__fine reveal reveal--d3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
-          Educational tool only. No product, investment, tax, legal, credit, or insurance recommendations.
-        </p>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -156,72 +190,39 @@
 
   <!-- FOOTER -->
   <footer class="floor-foot">
-    <div class="floor-foot__inner">
+    <div class="floor-foot__inner" style="flex-direction:column;gap:18px;align-items:center;text-align:center">
+      <p class="ff-disclose">The Financial Floor is a separate money-clarity service and is not a condition of receiving a quote, applying for insurance, or purchasing a policy. It does not provide a financial plan or determine whether a particular quote, premium, or policy is appropriate.</p>
       <span>Morgan Branch the Broker</span>
       <span class="floor-foot__tag">Where your money meets your purpose.</span>
     </div>
   </footer>
 
   <script>
-    // Mobile nav toggle
-    (function () {
-      var t = document.getElementById('navToggle');
-      var l = document.getElementById('navLinks');
-      if (t && l) {
-        t.addEventListener('click', function () {
-          var open = l.classList.toggle('is-open');
-          t.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-      }
-    })();
+    // The Lead Desk app that hosts the already-built secure Financial Floor scheduling
+    // flow. The add-on CTA routes ONLY into that flow's financial-floor appointment type.
+    var QUOTE_APP_BASE = "https://d2x9w6n3bjszyf.cloudfront.net";
+
     // Reveal on scroll
     (function () {
       var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) {
-        els.forEach(function (e) { e.classList.add('is-in'); });
-        return;
-      }
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
-        });
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
       }, { threshold: 0.12 });
       els.forEach(function (e) { io.observe(e); });
     })();
-    // Waitlist form
+
+    // Add-on CTA → the secure "Purchase Consultation with the Financial Floor" booking.
+    // No lead id, quote id, email, session id, or token is ever placed in the URL — only
+    // a non-identifying intent hint. The booking lives behind the verified Quote Overview
+    // session on the Lead Desk host; if there is no verified session, that page shows its
+    // existing generic message and discloses nothing about whether a quote/lead exists.
     (function () {
-      var form = document.getElementById('waitlistForm');
-      if (!form) return;
-      var msg = document.getElementById('waitlistMsg');
-      var name = document.getElementById('wlName');
-      var email = document.getElementById('wlEmail');
-      var hp = document.getElementById('wlHp');
-      var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      function say(t, ok) { if (msg) { msg.textContent = t; msg.style.color = ok ? '' : '#e6b8b8'; } }
-      form.addEventListener('submit', function (e) {
+      var cta = document.getElementById('addFloorCta');
+      if (!cta) return;
+      cta.addEventListener('click', function (e) {
         e.preventDefault();
-        if (hp && hp.value) return;                 // honeypot: silently drop bots
-        var n = (name.value || '').trim();
-        var em = (email.value || '').trim();
-        if (!n) { say('Please add your first name.', false); name.focus(); return; }
-        if (!re.test(em)) { say('Please enter a valid email address.', false); email.focus(); return; }
-        var endpoint = form.getAttribute('data-endpoint') || '';
-        var done = function () {
-          form.reset();
-          say("You're on the list. We'll be in touch when the Financial Floor opens.", true);
-        };
-        if (endpoint && endpoint.charAt(0) !== '#') {
-          var body = new URLSearchParams();
-          body.append('first_name', n);
-          body.append('email', em);
-          body.append('source', 'financial-floor-waitlist');
-          fetch(endpoint, { method: 'POST', mode: 'no-cors', body: body })
-            .then(done)['catch'](function () {
-              say('Something went wrong. Please try again in a moment.', false);
-            });
-        } else {
-          done();   // no endpoint wired yet — confirm locally
-        }
+        window.location.href = QUOTE_APP_BASE + "/quote-overview.html#book=financial_floor";
       });
     })();
   </script>
