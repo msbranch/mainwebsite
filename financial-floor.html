@@ -216,17 +216,19 @@
       els.forEach(function (e) { io.observe(e); });
     })();
 
-    // Add-on CTA → the secure "Purchase Consultation with the Financial Floor" booking.
-    // No lead id, quote id, email, session id, or token is ever placed in the URL — only
-    // a non-identifying intent hint. The booking lives behind the verified Quote Overview
-    // session on the Lead Desk host; if there is no verified session, that page shows its
-    // existing generic message and discloses nothing about whether a quote/lead exists.
+    // Add-on CTA → the secure $67 Financial Floor checkout on the Lead Desk host. The
+    // amount, product, and appointment type are all decided server-side; this page sends
+    // NO lead id, quote id, email, price, session id, or token in the URL. The order page
+    // lives behind the verified Quote Overview session (an HTTP-only cookie on the Lead
+    // Desk host); with no verified session it shows a generic message and discloses
+    // nothing about whether a quote or lead exists. Scheduling only opens after the
+    // payment is confirmed by our server via a signed webhook.
     (function () {
       var cta = document.getElementById('addFloorCta');
       if (!cta) return;
       cta.addEventListener('click', function (e) {
         e.preventDefault();
-        window.location.href = QUOTE_APP_BASE + "/quote-overview.html#book=financial_floor";
+        window.location.href = QUOTE_APP_BASE + "/financial-floor-order.html";
       });
     })();
   </script>
