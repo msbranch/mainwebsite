@@ -22,14 +22,21 @@
     .ff-points { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
     .ff-points li { font-family: var(--sans); font-size: 14px; color: var(--ink); display: flex; align-items: center; gap: 10px; }
     .ff-points li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--lav); flex: 0 0 auto; }
-    .ff-scope { margin-top: 26px; font-size: 13px; line-height: 1.6; color: var(--body); max-width: 60ch; }
     /* Price + add-on action (on the dark band) */
     .ff-price { margin: 30px 0 8px; }
     .ff-price__label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lav); }
     .ff-price__amount { font-family: var(--serif); font-size: clamp(48px, 9vw, 72px); line-height: 1; color: #fff; margin-top: 8px; }
-    .ff-scopeline { color: rgba(255,255,255,0.82); font-size: 15px; line-height: 1.6; max-width: 54ch; margin: 18px auto 0; }
-    .ff-note { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; max-width: 54ch; margin: 12px auto 26px; }
     .ff-disclose { font-size: 12.5px; line-height: 1.65; color: var(--body); max-width: 72ch; margin: 0 auto; }
+    /* "How It Works" on a black band — contrast against the white + powder sections */
+    #howitworks .section-title { color: #fff; }
+    #howitworks .kicker { color: var(--lav); }
+    #howitworks .italic-accent { color: var(--lav); }
+    #howitworks .steps { border-color: rgba(255,255,255,0.16); }
+    #howitworks .step { border-right-color: rgba(255,255,255,0.16); }
+    #howitworks .step__num { color: var(--lav); }
+    #howitworks .step__title { color: #fff; }
+    #howitworks .step__body { color: rgba(255,255,255,0.72); }
+    @media (max-width: 720px) { #howitworks .step { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.16); } }
   </style>
 </head>
 <body>
@@ -53,7 +60,7 @@
               <span class="kicker">A Private Money-Clarity Add-On</span>
             </div>
             <h1 class="hero__title reveal reveal--d1">See what your month was <em class="italic-accent">carrying.</em></h1>
-            <p class="hero__body reveal reveal--d2">The Financial Floor is a private, human-led review of one completed month. Morgan turns the information you choose to share into a clear picture of actual income, fixed expenses, variable expenses, and what remained after the month.</p>
+            <p class="hero__body reveal reveal--d2">The Financial Floor is a private conversation where Morgan turns your bank statement into a clear picture of actual income, expenses, and what remained after the month. We clear confusion and add foundation.</p>
             <div class="hero__cta reveal reveal--d3">
               <a href="#receive" class="btn btn--dark">
                 See what is included
@@ -113,7 +120,7 @@
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="section section--white">
+    <section id="howitworks" class="section section--ink">
       <div class="container">
         <div class="section-head">
           <p class="kicker reveal">How It Works</p>
@@ -160,7 +167,6 @@
               <li>You choose what to share</li>
               <li>Separate from the insurance decision</li>
             </ul>
-            <p class="ff-scope">The Financial Floor is a separate money-clarity service. It does not determine whether a quote, premium, or policy is right for you, and it is not a financial plan or investment, tax, legal, credit, debt, or insurance advice.</p>
           </div>
         </div>
       </div>
@@ -175,8 +181,6 @@
           <div class="ff-price__label">The Financial Floor Add-On</div>
           <div class="ff-price__amount">$67</div>
         </div>
-        <p class="ff-scopeline reveal reveal--d2">One completed month. Up to two selected statements. A prepared Monthly Money Snapshot. The Financial Floor portion of your scheduled conversation.</p>
-        <p class="ff-note reveal reveal--d2">Scheduling reserves your conversation. Morgan provides the private statement-sharing and service-payment details before any review begins.</p>
         <div class="hero__cta reveal reveal--d3" style="justify-content:center">
           <a href="#" id="addFloorCta" class="btn btn--light">
             Add the Financial Floor to My Consultation — $67
