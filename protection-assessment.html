@@ -346,7 +346,7 @@
 
   <script>
     /* Public Assessment Intake endpoints (public submit + token-gated status ONLY).
-       The browser never calls Zapier, OpenAI, Secrets Manager, or the private
+       The browser never calls the AI model provider, Secrets Manager, or the private
        callback. Overridable for tests by setting window.PA_CONFIG before load. */
     window.PA_CONFIG = window.PA_CONFIG || {
       apiBase: "https://s74stha6hd.execute-api.us-east-1.amazonaws.com",
