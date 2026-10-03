@@ -181,12 +181,15 @@
           <div class="ff-price__label">The Financial Floor Add-On</div>
           <div class="ff-price__amount">$67</div>
         </div>
-        <div class="hero__cta reveal reveal--d3" style="justify-content:center">
-          <a href="#" id="addFloorCta" class="btn btn--light">
-            Add the Financial Floor to My Consultation — $67
+        <div class="hero__cta reveal reveal--d3" style="justify-content:center;margin-top:30px">
+          <a href="protection-assessment.html" class="btn btn--light">
+            Take the Protection Assessment
             <svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
+        <p class="reveal reveal--d3" style="text-align:center;margin-top:16px">
+          <a href="index.html" style="color:rgba(255,255,255,.6);font-size:14px;text-decoration:underline;text-underline-offset:3px">Return to home</a>
+        </p>
       </div>
     </section>
 
@@ -202,9 +205,11 @@
   </footer>
 
   <script>
-    // The Lead Desk app that hosts the already-built secure Financial Floor scheduling
-    // flow. The add-on CTA routes ONLY into that flow's financial-floor appointment type.
-    var QUOTE_APP_BASE = "https://d2x9w6n3bjszyf.cloudfront.net";
+    // The Financial Floor is purchased inside the quote workflow (assessment → quote
+    // request → verified Quote Overview → $67 secure checkout → scheduling). A visitor
+    // landing on this page cold has not started that workflow, so the CTA sends them to
+    // the top of the funnel — the Protection Assessment — rather than to a checkout they
+    // could not yet complete. The $67 add-on is offered later, from their Quote Overview.
 
     // Reveal on scroll
     (function () {
@@ -214,20 +219,6 @@
         entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
       }, { threshold: 0.12 });
       els.forEach(function (e) { io.observe(e); });
-    })();
-
-    // Add-on CTA → the secure "Purchase Consultation with the Financial Floor" booking.
-    // No lead id, quote id, email, session id, or token is ever placed in the URL — only
-    // a non-identifying intent hint. The booking lives behind the verified Quote Overview
-    // session on the Lead Desk host; if there is no verified session, that page shows its
-    // existing generic message and discloses nothing about whether a quote/lead exists.
-    (function () {
-      var cta = document.getElementById('addFloorCta');
-      if (!cta) return;
-      cta.addEventListener('click', function (e) {
-        e.preventDefault();
-        window.location.href = QUOTE_APP_BASE + "/quote-overview.html#book=financial_floor";
-      });
     })();
   </script>
 </body>
