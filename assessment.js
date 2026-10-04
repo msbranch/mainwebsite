@@ -664,38 +664,43 @@
     });
   }
 
+  // Route a results-page CTA into its secure, server-backed Lead Desk page when a quote
+  // access token + a configured app base are present; the opaque token rides in the URL
+  // FRAGMENT (never a query param). Otherwise fall back to the private follow-up request
+  // so the button always does something useful. Shared by both results CTAs:
+  //   "Request a Free Quote"      → request-quote.html  (fallback: quote_conversation)
+  //   "Request a Coverage Review" → coverage-review.html (fallback: coverage_review) —
+  //       the paid $27 Coverage Review: overview → Stripe → calendar.
+  function routeOrFollowUp(page, fallbackType) {
+    var base = (cfg().quoteAppBase || "").replace(/\/+$/, "");
+    function routeTo(tok) { window.location.href = base + page + "#t=" + encodeURIComponent(tok); }
+
+    if (base && quoteAccessToken) { routeTo(quoteAccessToken); return; }
+
+    // No token captured yet but a base is configured: the token can attach a moment
+    // after the reflection resolves, so fetch the result ONE more time at click time
+    // to grab the freshest token before deciding. Fall back only if it is truly absent.
+    if (base && lastResultId && lastResultToken) {
+      var c = cfg();
+      var url = (c.apiBase || "") + (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(lastResultId);
+      fetch(url, { method: "GET", headers: { "x-result-token": lastResultToken } })
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (data) {
+          if (data && data.quoteAccess && data.quoteAccess.token) { quoteAccessToken = data.quoteAccess.token; routeTo(quoteAccessToken); }
+          else { submitFollowUp(fallbackType); }
+        })
+        .catch(function () { submitFollowUp(fallbackType); });
+      return;
+    }
+
+    submitFollowUp(fallbackType);
+  }
+
   function wireFollowUp() {
     var cov = document.getElementById("rCoverageReview");
     var quote = document.getElementById("rQuoteConversation");
-    if (cov) cov.addEventListener("click", function () { submitFollowUp("coverage_review"); });
-    if (quote) quote.addEventListener("click", function () {
-      // Real route to the secure, server-backed Request-a-Quote form when a quote
-      // access token + a configured app base are present; the opaque token rides in
-      // the URL FRAGMENT (never a query param). Otherwise fall back to the private
-      // follow-up request (so the button always does something useful).
-      var base = (cfg().quoteAppBase || "").replace(/\/+$/, "");
-      function routeTo(tok) { window.location.href = base + "/request-quote.html#t=" + encodeURIComponent(tok); }
-
-      if (base && quoteAccessToken) { routeTo(quoteAccessToken); return; }
-
-      // No token captured yet but a base is configured: the token can attach a moment
-      // after the reflection resolves, so fetch the result ONE more time at click time
-      // to grab the freshest token before deciding. Fall back only if it is truly absent.
-      if (base && lastResultId && lastResultToken) {
-        var c = cfg();
-        var url = (c.apiBase || "") + (c.statusPath || "/v1/protection-assessments/") + encodeURIComponent(lastResultId);
-        fetch(url, { method: "GET", headers: { "x-result-token": lastResultToken } })
-          .then(function (res) { return res.ok ? res.json() : null; })
-          .then(function (data) {
-            if (data && data.quoteAccess && data.quoteAccess.token) { quoteAccessToken = data.quoteAccess.token; routeTo(quoteAccessToken); }
-            else { submitFollowUp("quote_conversation"); }
-          })
-          .catch(function () { submitFollowUp("quote_conversation"); });
-        return;
-      }
-
-      submitFollowUp("quote_conversation");
-    });
+    if (cov) cov.addEventListener("click", function () { routeOrFollowUp("/coverage-review.html", "coverage_review"); });
+    if (quote) quote.addEventListener("click", function () { routeOrFollowUp("/request-quote.html", "quote_conversation"); });
   }
 
   // ---- Global nav buttons ----
