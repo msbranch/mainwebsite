@@ -488,7 +488,7 @@
 
     fetch(url, {
       method: "POST",
-      headers: { "content-type": "application/json", "idempotency-key": makeIdemKey() },
+      headers: { "content-type": "application/json", "idempotency-key": attemptIdempotencyKey() },
       body: JSON.stringify(buildSubmitPayload()),
       signal: ac ? ac.signal : undefined
     }).then(function (res) {
@@ -583,6 +583,19 @@
       if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
     } catch (e) {}
     return String(Date.now()) + "-" + Math.random().toString(36).slice(2);
+  }
+
+  // ONE stable idempotency key per assessment attempt. Minted lazily on the first submit
+  // and reused for every subsequent submit of the SAME attempt (retries, delayed or
+  // accidental repeat submits, back/forward re-entry of the result screen), so the server
+  // deduplicates them to a single result. It is NOT derived from any personal data. The
+  // attempt is the page session: a refresh (the deliberate way to start a new assessment,
+  // by design) resets the module and mints a fresh key, keeping legitimate later
+  // assessments as separate records.
+  var _attemptIdemKey = null;
+  function attemptIdempotencyKey() {
+    if (!_attemptIdemKey) _attemptIdemKey = makeIdemKey();
+    return _attemptIdemKey;
   }
 
   // ---- Follow-up CTAs (Coverage Review / Quote Conversation) ----
