@@ -425,7 +425,7 @@
   // the CTAs.
   var resultContext = { resultId: null, token: null };
   // Opaque Lead-Desk quote-access token, relayed on the result GET. When present it
-  // turns "Request a Quote" into a real route to the secure, server-backed
+  // turns "Request a Free Quote" into a real route to the secure, server-backed
   // request form (carried in the URL FRAGMENT, never a query param or log).
   var quoteAccessToken = null;
   // The result id + browser token, kept so the quote button can re-fetch the result
@@ -606,7 +606,7 @@
   var followUpSent = { coverage_review: false, quote_conversation: false };
   var FOLLOW_UP_COPY = {
     coverage_review: "Your Coverage Review request has been saved.",
-    quote_conversation: "Your Quote request has been saved."
+    quote_conversation: "Your Free Quote request has been saved."
   };
 
   // The CTAs become usable only once a real result exists for the Lead Desk to
@@ -681,7 +681,7 @@
   // access token + a configured app base are present; the opaque token rides in the URL
   // FRAGMENT (never a query param). Otherwise fall back to the private follow-up request
   // so the button always does something useful. Shared by both results CTAs:
-  //   "Request a Quote"      → request-quote.html  (fallback: quote_conversation)
+  //   "Request a Free Quote"      → request-quote.html  (fallback: quote_conversation)
   //   "Request a Coverage Review" → coverage-review.html (fallback: coverage_review) —
   //       the paid $27 Coverage Review: overview → Stripe → calendar.
   function routeOrFollowUp(page, fallbackType) {
