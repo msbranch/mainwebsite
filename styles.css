@@ -4,15 +4,15 @@
    ========================================================= */
 
 :root {
-  --black: #16161a;
+  --black: #0A0A0A;
   --white: #ffffff;
-  --off-white: #f6f6f9;
-  --lavender: #E6E6FA;   /* primary — button fills, link underlines, blockquote border */
-  --powder: #DBECFF;     /* secondary — tag pills, hover states */
+  --off-white: #F7F6F4;
+  --lavender: #C9B8E8;   /* primary — button fills, link underlines, blockquote border */
+  --powder: #B8D4E8;     /* secondary — tag pills, hover states */
   --accent: #5b53c6;     /* deep indigo — small doses only, never a fill */
   --accent-hover: #4b44b0;
-  --edge: #d9d2f3;       /* card hover border */
-  --edge-light: #f0eefb; /* card hover fill */
+  --edge: #DDD0EF;       /* card hover border */
+  --edge-light: #F1ECFA; /* card hover fill */
   --body-soft: #3a3a42;  /* long-paragraph ink (headings stay full ink) */
 
   /* On-dark (ink sections / hero) */
@@ -21,9 +21,9 @@
   --ink-body: #e7e6f2;
   --ink-emph: #cfc9f5;
 
-  --gray-text: #6b6b73;
+  --gray-text: #74747D;
   --gray-muted: #8a8a95;
-  --border-light: #e7e7ec;
+  --border-light: #E7E4EC;
   --border-dark: #262626;
 
   /* Brand accent tokens — restrained lavender + powder blue, used for small

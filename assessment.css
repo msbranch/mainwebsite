@@ -10,12 +10,12 @@
   --white: #ffffff;
   --paper: #f7f6f4;
   --lav: #C9B8E8;          /* lavender accent — selection + primary button */
-  --lav-soft: #f2ecfa;     /* soft lavender selection fill */
-  --lav-line: #d9c9f0;
+  --lav-soft: #f1ecfa;     /* soft lavender selection fill */
+  --lav-line: #ddd0ef;
   --pow: #B8D4E8;          /* powder blue accent */
   --pow-soft: #eef6fc;
   --line: #e7e4ec;
-  --muted: #6b6b73;
+  --muted: #74747d;
   --ink-soft: #3a3a42;
   --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;

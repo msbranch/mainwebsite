@@ -6,13 +6,13 @@
 
 :root {
   --paper:      #f7f6f4;   /* off-white ground                     */
-  --ink:        #121116;   /* near-black (dark sections + cards)    */
+  --ink:        #0A0A0A;   /* near-black (dark sections + cards)    */
   --powder:     #b8d4e8;   /* powder-blue band                     */
   --lav:        #c9b8e8;   /* light lavender — accents on dark      */
   --violet:     #7d6ba6;   /* dusty violet — italic accents on light*/
-  --muted:      #69636f;   /* mono kickers / fine print             */
+  --muted:      #74747d;   /* mono kickers / fine print             */
   --body:       #3a3a42;   /* body copy on light                    */
-  --line:       #e4dfd8;   /* hairline borders on light             */
+  --line:       #e7e4ec;   /* hairline borders on light             */
 
   --on-dark-label: #9a94a6;
   --on-dark-body:  #e7e6f2;
