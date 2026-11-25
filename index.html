@@ -1,218 +1,534 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Morgan Branch the Broker — What does your income carry?</title>
-  <meta name="description" content="Morgan Branch the Broker helps you start with the responsibility your income carries — home, people, work, and future — then decide whether a separate protection conversation is worth having. Protection, explained in plain English." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=16" />
-  <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- ============================================================= -->
+<!--  SEO / SOCIAL                                                  -->
+<!-- ============================================================= -->
+<title>[PRODUCT NAME] | Your Personal CFO</title>
+<meta name="description" content="A personal income statement in Google Sheets, kept current by your own AI assistant. Log every purchase in one sentence, see exactly where your money goes, and plan your next move — built around your life, not an app's defaults." />
+<link rel="canonical" href="https://morganbranch.co/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="[PRODUCT NAME] | Your Personal CFO" />
+<meta property="og:description" content="Your money, your system. A personal income statement in Google Sheets plus a Personal CFO you talk to in plain language — log every dollar, see where it goes, plan your next move." />
+<meta property="og:image" content="og-image.png" /> <!-- PLACEHOLDER: 1200×630 -->
+<meta property="og:url" content="https://morganbranch.co/" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="favicon.png" /> <!-- PLACEHOLDER -->
+
+<!-- ============================================================= -->
+<!--  CONFIG — the only things you normally change. Edit once.      -->
+<!-- ============================================================= -->
+<script>
+  window.CONFIG = {
+    PRODUCT_NAME:   "[PRODUCT NAME]",        // working suggestion: "The Personal CFO Workflow"
+    BUY_URL:        "[PAYHIP PRODUCT LINK]", // your Payhip product link
+    FOUNDING_PRICE: "$19",
+    REGULAR_PRICE:  "$29",
+    GHOST_SIGNUP:   "[GHOST SIGNUP EMBED OR URL]" // your Ghost newsletter form URL (see newsletter section)
+  };
+</script>
+
+<style>
+  :root{
+    --green:#2E5E4E; --green-dark:#244B3E;
+    --text:#1F2A2E; --muted:#5B6B70;
+    --tint:#EEF3F0; --border:#C9D6D0; --white:#ffffff;
+    --radius:14px; --maxw:1060px;
+    --shadow:0 1px 2px rgba(31,42,46,.05), 0 8px 24px rgba(31,42,46,.06);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Inter", sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;font-family:var(--font);color:var(--text);background:var(--white);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{line-height:1.2;color:var(--text);margin:0 0 .5em;letter-spacing:-.01em}
+  h1{font-size:2.1rem;font-weight:800}
+  h2{font-size:1.55rem;font-weight:750}
+  h3{font-size:1.1rem;font-weight:700}
+  p{margin:0 0 1rem}
+  a{color:var(--green)}
+  img,video{max-width:100%;height:auto;display:block}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  .section{padding:52px 0}
+  .section--tint{background:var(--tint)}
+  .section__head{max-width:720px;margin:0 auto 28px;text-align:center}
+  .section__head p{color:var(--muted);margin:0}
+  .eyebrow{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:0 0 14px}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--green);color:#fff;padding:10px 16px;border-radius:0 0 8px 0;z-index:100}
+  .skip:focus{left:0}
+
+  /* Buttons + buy block */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4ch;background:var(--green);color:#fff;text-decoration:none;font-weight:700;font-size:1.0625rem;padding:15px 28px;border-radius:999px;border:0;cursor:pointer;box-shadow:var(--shadow);transition:background .15s ease, transform .05s ease;text-align:center;line-height:1.2;min-height:52px}
+  .btn:hover{background:var(--green-dark)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid #90B6A6;outline-offset:3px}
+  .buybox{text-align:center}
+  .pricenote{color:var(--text);font-size:.92rem;font-weight:600;margin:12px auto 0;max-width:460px}
+  .fineprint{color:var(--muted);font-size:.86rem;max-width:480px;margin:8px auto 0}
+
+  /* Hero */
+  .hero{padding:44px 0 40px;background:linear-gradient(180deg,#fff 0%,var(--tint) 100%)}
+  .hero__inner{display:grid;gap:30px;align-items:center}
+  .hero h1{font-size:2.15rem}
+  .hero__sub{font-size:1.1rem;color:var(--muted);max-width:44ch}
+  .hero__shot{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff}
+
+  .band{background:var(--green);color:#fff;text-align:center;padding:22px 20px}
+  .band p{margin:0;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.9rem}
+
+  /* Demo */
+  .demo__video{position:relative;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#0d1512;max-width:720px;margin:0 auto}
+  .chips{display:grid;gap:12px;max-width:600px;margin:26px auto 0}
+  .chip{background:#fff;border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:12px 16px;box-shadow:var(--shadow);font-weight:500}
+  .chip small{display:block;color:var(--green);font-weight:800;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+
+  /* Comparison (app vs workflow) */
+  .compare{max-width:860px;margin:0 auto;display:grid;gap:12px}
+  .cmp-row{display:grid;gap:10px}
+  .cmp-cell{border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+  .cmp-app{background:var(--tint)}
+  .cmp-flow{background:#fff}
+  .cmp-cell .lab{display:block;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+  .cmp-app .lab{color:var(--muted)} .cmp-flow .lab{color:var(--green)}
+  .cmp-cell p{margin:0;color:var(--text);font-size:.97rem}
+
+  /* Income statement diagram */
+  .diagram{max-width:560px;margin:0 auto;display:grid;gap:8px}
+  .layer{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;box-shadow:var(--shadow)}
+  .layer b{display:block;font-size:1rem}
+  .layer span{color:var(--muted);font-size:.9rem}
+  .layer--in{background:#e7f0ea;border-color:#bfe0cd}
+  .layer--net{background:var(--tint)}
+  .flowcap{text-align:center;color:var(--muted);max-width:620px;margin:20px auto 0}
+
+  /* Steps */
+  .steps{display:grid;gap:18px;counter-reset:step}
+  .step{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 22px 22px 68px;position:relative;box-shadow:var(--shadow)}
+  .step::before{counter-increment:step;content:counter(step);position:absolute;left:18px;top:20px;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .step h3{margin-bottom:.25em;font-size:1rem}
+  .step p{margin:0;color:var(--muted);font-size:.95rem}
+  .note{text-align:center;color:var(--muted);font-size:.92rem;margin-top:18px}
+
+  /* Two columns (for/not, build-it-yourself) */
+  .two{display:grid;gap:18px}
+  .col{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .col h3{display:flex;align-items:center;gap:.5ch;font-size:1.05rem}
+  .col ul{margin:0;padding-left:1.25em}
+  .col li{margin:.45em 0;color:var(--muted)}
+  .col--no{background:var(--tint)}
+  .yes{color:var(--green)} .no{color:#8a5a3b}
+
+  /* Stat tiles */
+  .stats{display:grid;gap:14px;max-width:860px;margin:28px auto 0;grid-template-columns:1fr 1fr}
+  .stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);text-align:center}
+  .stat b{display:block;color:var(--green);font-size:1.3rem;font-weight:800;line-height:1.1}
+  .stat span{display:block;color:var(--muted);font-size:.88rem;margin-top:4px}
+
+  /* Prompt chips */
+  .pchips{display:grid;gap:12px;max-width:620px;margin:26px auto 0}
+  .pchip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 16px;box-shadow:var(--shadow)}
+  .pchip .lab{display:inline-block;background:var(--tint);color:var(--green);font-weight:800;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-bottom:7px}
+  .pchip p{margin:0;font-weight:500}
+
+  /* Included */
+  .included{display:grid;gap:14px;max-width:720px;margin:0 auto}
+  .inc{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+  .inc .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--tint);border:1px solid var(--border);color:var(--green);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.9rem;margin-top:2px}
+  .inc h3{font-size:1rem;margin:0 0 .15em}
+  .inc p{margin:0;color:var(--muted);font-size:.95rem}
+  .req{max-width:720px;margin:24px auto 0;background:var(--tint);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px}
+  .req h3{font-size:1rem;margin-bottom:.4em}
+  .req ul{margin:0;padding-left:1.2em;color:var(--muted)}
+  .req li{margin:.25em 0}
+
+  /* About */
+  .about{display:grid;gap:22px;align-items:center;max-width:760px;margin:0 auto}
+  .about__photo{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:var(--shadow);background:var(--tint);margin:0 auto}
+  .about p:last-child{margin-bottom:0}
+
+  /* FAQ */
+  .faq{max-width:720px;margin:0 auto}
+  details{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:16px 46px 16px 18px;font-weight:700;position:relative;color:var(--text)}
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:3px solid #90B6A6;outline-offset:-3px}
+  summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--green);font-size:1.3rem}
+  details[open] summary::after{content:"–"}
+  details .body{padding:0 18px 18px;color:var(--muted)}
+  details .body p{margin:0}
+
+  /* Newsletter */
+  .news{max-width:560px;margin:0 auto;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center}
+  .news h3{margin-bottom:.25em}
+  .news p{color:var(--muted);margin-bottom:16px}
+  .news form{display:grid;gap:10px}
+  .news input[type=email]{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:999px;font-size:1rem;font-family:inherit}
+  .news input[type=email]:focus-visible{outline:3px solid #90B6A6;outline-offset:2px}
+  @media (min-width:520px){.news form{grid-template-columns:1fr auto}}
+
+  /* Footer */
+  footer{background:#fff;border-top:1px solid var(--border);padding:34px 0 120px}
+  .foot{max-width:760px;margin:0 auto;text-align:center;color:var(--muted);font-size:.9rem}
+  .foot .disclaimer{font-size:.84rem;margin-bottom:14px}
+  .foot a{color:var(--green)}
+
+  /* Sticky mobile buy bar */
+  .stickybar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:10px 14px;box-shadow:0 -6px 18px rgba(31,42,46,.08)}
+  .stickybar .btn{width:100%;padding:14px 20px}
+
+  @media (min-width:720px){
+    body{font-size:18px}
+    h1{font-size:2.6rem}
+    .hero h1{font-size:2.9rem}
+    h2{font-size:2rem}
+    .section{padding:72px 0}
+    .hero{padding:64px 0 56px}
+    .hero__inner{grid-template-columns:1.05fr 1fr}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .two{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:repeat(4,1fr)}
+    .cmp-row{grid-template-columns:1fr 1fr;gap:12px}
+    .about{grid-template-columns:160px 1fr;text-align:left}
+    .about__photo{margin:0}
+    .stickybar{display:none}
+    footer{padding-bottom:40px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
+
 <body>
+<a class="skip" href="#included">Skip to what you get</a>
 
-  <nav class="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo">Morgan Branch <em>the Broker</em></a>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav__links" id="navLinks">
-        <a href="index.html">Home</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="financial-floor.html">The Financial Floor</a>
-        <a href="about.html">About</a>
-        <!-- Protection Assessment link. Destination is centralized in main.js
-             (PROTECTION_ASSESSMENT_URL). Until a real destination exists, this
-             scrolls to the on-page "How Protection Starts Here" section. -->
-        <a href="protection-assessment.html" class="nav__cta" data-assessment-link>Explore the Protection Assessment →</a>
+<!-- 1 · HERO -->
+<header class="hero">
+  <div class="wrap hero__inner">
+    <div>
+      <span class="eyebrow">For people who'd rather log it themselves.</span>
+      <h1>Your money, your system. A Personal CFO you can talk to.</h1>
+      <p class="hero__sub">A personal income statement in Google Sheets, kept current by your own AI assistant. Log every purchase in one sentence, see exactly where your money goes, and plan your next move — all built around your life, not an app's defaults.</p>
+      <div class="buybox" style="text-align:left">
+        <a class="btn" data-buy href="#">Get the Workflow, <span data-price>$19</span></a>
+        <p class="pricenote" style="margin-left:0;text-align:left">Founding price for the first 100 buyers, then <span data-regular>$29</span>.</p>
+        <p class="fineprint" style="margin-left:0;text-align:left">Requires a Google account and an AI assistant that can edit Google Sheets, such as ChatGPT or Claude. Subscription not included.</p>
       </div>
     </div>
-  </nav>
+    <div class="hero__shot">
+      <!-- PLACEHOLDER: hero-sheet.png — screenshot of the workbook -->
+      <img src="hero-sheet.png" width="1000" height="720"
+           alt="A personal income statement open in Google Sheets: income at the top, fixed and variable expenses, and net income below." />
+    </div>
+  </div>
+</header>
 
-  <!-- Hero -->
-  <header class="hero hero--home">
-    <div class="container">
-      <div class="hero__grid">
-        <div class="hero__content">
-          <span class="label reveal">Protection, explained in plain English</span>
-          <h1 class="display reveal reveal--d1">What does your income <em>carry</em>?</h1>
-          <p class="subtext reveal reveal--d2">Your income may be holding up more than a paycheck—your home, the people who rely on you, the work you built, and the responsibilities you do not want to leave behind.</p>
-          <p class="subtext hero__subtext-2 reveal reveal--d2">Morgan Branch the Broker helps you start with the responsibilities at hand, then decide whether a separate protection conversation is worth having.</p>
-          <div class="hero__cta-row reveal reveal--d3">
-            <a href="protection-assessment.html" class="btn btn--pill cta-arrow" data-assessment-link>Explore the Protection Assessment <span class="arw" aria-hidden="true">→</span></a>
-          </div>
-          <div class="hero__foot reveal reveal--d4">
-            <span class="hero__rule" aria-hidden="true"></span>
-            <p class="hero__note">A different place to start: the responsibility before the product.</p>
-          </div>
-        </div>
+<div class="band"><p>Your copy. Your decisions.</p></div>
 
-        <!-- Responsibility Ledger — a restrained CSS-only structure. Not a
-             dashboard, spreadsheet, or statement: no totals, data, or icons. -->
-        <aside class="ledger" aria-label="What your income may carry">
-          <div class="ledger__row reveal reveal--d1">
-            <span class="ledger__num" aria-hidden="true">01</span>
-            <div class="ledger__text">
-              <span class="ledger__label">Home</span>
-              <span class="ledger__desc">A place to return to</span>
-            </div>
-          </div>
-          <div class="ledger__row reveal reveal--d2">
-            <span class="ledger__num" aria-hidden="true">02</span>
-            <div class="ledger__text">
-              <span class="ledger__label">People</span>
-              <span class="ledger__desc">People connected to your income</span>
-            </div>
-          </div>
-          <div class="ledger__row reveal reveal--d3">
-            <span class="ledger__num" aria-hidden="true">03</span>
-            <div class="ledger__text">
-              <span class="ledger__label">Work</span>
-              <span class="ledger__desc">Work that depends on you</span>
-            </div>
-          </div>
-          <div class="ledger__row reveal reveal--d4">
-            <span class="ledger__num" aria-hidden="true">04</span>
-            <div class="ledger__text">
-              <span class="ledger__label">Future</span>
-              <span class="ledger__desc">What remains after you</span>
-            </div>
-          </div>
-          <div class="ledger__row reveal reveal--d5">
-            <span class="ledger__num" aria-hidden="true">05</span>
-            <div class="ledger__text">
-              <span class="ledger__label">Assets</span>
-              <span class="ledger__desc">What you have worked to build and keep</span>
-            </div>
-          </div>
-        </aside>
+<!-- 2 · DEMO -->
+<section class="section" id="demo">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">See it work</span>
+      <h2>Talk to your budget</h2>
+      <p>Three jobs, all in plain language: log it, plan it, think it through.</p>
+    </div>
+    <div class="demo__video">
+      <!-- PLACEHOLDER: demo.mp4 (15–20s, muted) + demo-poster.png -->
+      <video autoplay muted loop playsinline preload="none" poster="demo-poster.png"
+             aria-label="Screen recording: typing “Spent $42 on groceries with Debit A” and the income statement updating.">
+        <source src="demo.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="chips" aria-label="Examples of what you can say to your Personal CFO">
+      <div class="chip"><small>Log</small>Spent $42 on groceries yesterday with Debit A.</div>
+      <div class="chip"><small>Plan</small>What fixed bills are due before my next paycheck?</div>
+      <div class="chip"><small>Think it through</small>I have $300 extra this month. Based on my plan, what are my options?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · WHY NOT A BUDGETING APP -->
+<section class="section section--tint" id="why-app">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Why not a budgeting app?</span>
+      <h2>Apps tried to save you from logging. They took your control with it.</h2>
+      <p>Budgeting apps connect to your bank so you don't have to log anything. But you still end up fixing their categories, everything is organized by calendar month, and the system is built for everyone — which means it isn't built for you. This workflow takes the opposite approach: you log each transaction yourself in one sentence, and everything stays organized your way.</p>
+    </div>
+    <div class="compare">
+      <div class="cmp-row">
+        <div class="cmp-cell cmp-app"><span class="lab">A budgeting app</span><p>Connects to your bank and guesses</p></div>
+        <div class="cmp-cell cmp-flow"><span class="lab">This workflow</span><p>You log every dollar, so you know where it went</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-cell cmp-app"><span class="lab">A budgeting app</span><p>Generic categories you still have to fix</p></div>
+        <div class="cmp-cell cmp-flow"><span class="lab">This workflow</span><p>Your categories, your accounts, your notes</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-cell cmp-app"><span class="lab">A budgeting app</span><p>Organized by calendar month</p></div>
+        <div class="cmp-cell cmp-flow"><span class="lab">This workflow</span><p>Plans around your paychecks and your bills' real due dates</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-cell cmp-app"><span class="lab">A budgeting app</span><p>Your bank login on their servers</p></div>
+        <div class="cmp-cell cmp-flow"><span class="lab">This workflow</span><p>Your data in your own Google Drive</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-cell cmp-app"><span class="lab">A budgeting app</span><p>Logic you can't see</p></div>
+        <div class="cmp-cell cmp-flow"><span class="lab">This workflow</span><p>Every formula visible and checkable</p></div>
       </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- The Question -->
-  <section class="section section--white">
-    <div class="container">
-      <div class="section-head section-head--center">
-        <span class="label label--black reveal">The Question</span>
-        <h2 class="headline reveal reveal--d1">When income changes, who carries the <em>responsibility</em>?</h2>
-        <p class="q-sub reveal reveal--d2">Insurance exists because responsibility does not disappear when life hits you.</p>
-      </div>
-      <div class="stat-cards stat-cards--pair">
-        <div class="stat-card reveal reveal--d1">
-          <div class="stat-card__k">People</div>
-          <p class="stat-card__p">Income often supports more than one person. Consider who relies on your care, consistency, or contribution today.</p>
-        </div>
-        <div class="stat-card reveal reveal--d2">
-          <div class="stat-card__k">Work</div>
-          <p class="stat-card__p">A job, business, or role can carry responsibilities that do not automatically stop when one person is no longer there.</p>
-        </div>
-        <div class="stat-card reveal reveal--d3">
-          <div class="stat-card__k">Future</div>
-          <p class="stat-card__p">Some responsibilities are connected to what comes next. What future responsibility or opportunity would you not want to leave unsupported?</p>
-        </div>
-        <div class="stat-card reveal reveal--d4">
-          <div class="stat-card__k">Assets</div>
-          <p class="stat-card__p">What have you worked to build or keep—such as a home, business interest, or another asset with responsibilities attached to it?</p>
-        </div>
-      </div>
-      <p class="section-note reveal">The question is not simply what policy exists. It is what could be left <em>carrying the weight</em>.</p>
+<!-- 4 · PERSONAL INCOME STATEMENT -->
+<section class="section" id="statement">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Your personal income statement</span>
+      <h2>See exactly where your money goes</h2>
+      <p>Businesses use an income statement to see every dollar coming in and going out. This workflow gives you one, made for your life.</p>
     </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="section section--black" id="how-it-works">
-    <div class="container">
-      <div class="section-head">
-        <span class="label label--dark reveal">How Protection Starts Here</span>
-        <h2 class="headline reveal reveal--d1">Start with the responsibility. Then decide whether a protection conversation is worth <em>having</em>.</h2>
-      </div>
-
-      <div class="cards">
-        <div class="card proc reveal reveal--d1">
-          <div class="card__num">01</div>
-          <h3 class="card__title">Name what your income carries</h3>
-          <p class="card__body">Consider the people, obligations, work, and future plans connected to your income.</p>
-        </div>
-        <div class="card proc reveal reveal--d2">
-          <div class="card__num">02</div>
-          <h3 class="card__title">Clarify what matters most</h3>
-          <p class="card__body">Look at the responsibility, who could be affected, and whether it has a temporary or longer time horizon.</p>
-        </div>
-        <div class="card proc reveal reveal--d3">
-          <div class="card__num">03</div>
-          <h3 class="card__title">Choose your next step</h3>
-          <p class="card__body">If it feels relevant, request a separate licensed protection conversation to review available options.</p>
-        </div>
-      </div>
-
-      <p class="proc-note reveal">The Protection Assessment is educational. A quote conversation is separate and always voluntary.</p>
-
-      <div class="center-link reveal">
-        <a href="protection-assessment.html" class="btn btn--pill cta-arrow" data-assessment-link>Explore the Protection Assessment <span class="arw" aria-hidden="true">→</span></a>
-      </div>
+    <div class="diagram" aria-label="The layers of your personal income statement">
+      <div class="layer layer--in"><b>Income</b><span>Every dollar coming in, by account.</span></div>
+      <div class="layer"><b>Fixed expenses — committed</b><span>Rent, insurance, subscriptions: the bills you've already signed up for.</span></div>
+      <div class="layer"><b>Variable expenses — chosen</b><span>Groceries, gas, eating out: the spending you control day to day.</span></div>
+      <div class="layer layer--net"><b>Net income — projected vs. actual</b><span>Your plan for the month, next to what really happened.</span></div>
+      <div class="layer"><b>Debts &amp; account balances</b><span>What you owe and what you hold, all in one view.</span></div>
     </div>
-  </section>
+    <p class="flowcap">Know your fixed costs, control your variable spending, and see your free cash flow — the money left after what you've committed to.</p>
+  </div>
+</section>
 
-  <!-- Financial Floor + Mailing list -->
-  <section class="section section--white mail">
-    <div class="container">
-      <div class="mail-two">
-        <div class="mail-two__left reveal">
-          <span class="label label--black">More clarity, when you want it</span>
-          <h2 class="headline">The Financial Floor is a separate way to see what a month is <em>carrying</em>.</h2>
-          <p>For people who want a clearer view of monthly income, fixed responsibilities, variable spending, and what remains, Financial Floor is Morgan's money-clarity framework.</p>
-          <p>It's a money-clarity add-on to your protection consultation — not a standalone service, and not a replacement for an insurance review. You add it when you request your protection quote, so it always begins with a protection conversation.</p>
-          <a href="financial-floor.html" class="btn btn--powder cta-arrow">Learn about the Financial Floor <span class="arw" aria-hidden="true">→</span></a>
-        </div>
+<!-- 5 · DAILY WORKFLOW -->
+<section class="section section--tint" id="workflow">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Your daily workflow</span>
+      <h2>How your money flows through it</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Log it</h3><p>Tell your CFO what you spent or earned, in one sentence.</p></div>
+      <div class="step"><h3>It's filed correctly</h3><p>Entries land in the right place, using the workflow's built-in money rules.</p></div>
+      <div class="step"><h3>Plan ahead</h3><p>Ask what's due before payday, what's safe to spend, and where you're over plan.</p></div>
+      <div class="step"><h3>Roll into next month</h3><p>Your plan carries forward; your new month starts clean.</p></div>
+    </div>
+    <p class="note">One-time setup: make your private copy, connect your AI assistant, build your first month. About 45 minutes.</p>
+  </div>
+</section>
 
-        <div class="mail-two__right reveal reveal--d1">
-          <span class="label label--black">Keep the conversation close</span>
-          <p class="mail-two__lead">Get practical, plain-English protection and money-clarity education in your inbox.</p>
-          <form id="mailForm" class="mail-form mail-form--stack" data-endpoint="#MAILING_LIST_WEBHOOK_URL" novalidate>
-            <input type="text" id="mailName" name="first_name" class="mail-input" placeholder="First name" aria-label="First name" autocomplete="given-name" required />
-            <input type="email" id="mailEmail" name="email" class="mail-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
-            <input type="text" id="mailHp" name="website" class="mail-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <button type="submit" class="btn btn--solid">Join the List</button>
-          </form>
-          <p id="mailMsg" class="mail-msg" role="status" aria-live="polite"></p>
-        </div>
+<!-- 6 · WHY NOT DIY -->
+<section class="section" id="diy">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Why not build it yourself?</span>
+      <h2>You could connect a spreadsheet to AI yourself. Here's what you'd still have to build.</h2>
+      <p>An AI assistant connected to a blank spreadsheet doesn't know the rules of money. Left to guess, it will:</p>
+    </div>
+    <div class="two">
+      <div class="col col--no">
+        <h3><span class="no">✕</span> Without the workflow</h3>
+        <ul>
+          <li>Count a credit-card purchase, then count the card payment again</li>
+          <li>Treat money moved to savings as spending, or a transfer as income</li>
+          <li>Confuse your budget total with what's actually in the bank</li>
+          <li>Guess bill due dates from when charges posted</li>
+          <li>Lose track when a new month starts</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3><span class="yes">✓</span> With the workflow</h3>
+        <ul>
+          <li>Card purchases and payments counted once</li>
+          <li>Transfers and savings handled correctly</li>
+          <li>Budget and bank balance kept separate</li>
+          <li>Due dates confirmed, never guessed</li>
+          <li>Each month carries your plan forward</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__col">
-          <div class="footer__logo">Morgan Branch <em>the Broker</em></div>
-          <p class="footer__tag">What your income carries matters.</p>
-        </div>
-        <div class="footer__col">
-          <h4>Connect</h4>
-          <ul>
-            <li><a href="#INSTAGRAM_URL">Instagram</a></li>
-            <li><a href="#TIKTOK_URL">TikTok</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="https://d117bf8x84gyff.cloudfront.net/service-terms.html">Service Terms</a></li>
-            <li><a href="https://d117bf8x84gyff.cloudfront.net/refund-policy.html">Refund Policy</a></li>
-          </ul>
-        </div>
-      </div>
-      <p class="footer__disclosure">The Protection Assessment is educational and is not a recommendation of a policy, coverage amount, or insurance purchase. Insurance products are subject to underwriting, insurer approval, policy terms, and availability. Insurance services are offered where licensed.</p>
-      <p class="footer__disclaimer">© 2026 Morgan Branch Enterprises LLC. All rights reserved. Information provided is for educational purposes only and does not constitute specific tax, legal, or insurance advice.</p>
+    <div class="stats">
+      <div class="stat"><b>20</b><span>ready-to-use prompts</span></div>
+      <div class="stat"><b>10</b><span>money-handling rule sets</span></div>
+      <div class="stat"><b>21-step</b><span>guided setup</span></div>
+      <div class="stat"><b>Linked</b><span>monthly budget &amp; calculation tabs</span></div>
     </div>
-  </footer>
+    <div class="pchips" aria-label="Example things you can say">
+      <div class="pchip"><span class="lab">Cash to payday</span><p>“How much can I safely spend before Friday?”</p></div>
+      <div class="pchip"><span class="lab">Card payment</span><p>“I paid $300 to Credit Card A from Checking A.”</p></div>
+      <div class="pchip"><span class="lab">New month</span><p>“Start my December budget.”</p></div>
+    </div>
+  </div>
+</section>
 
-  <script src="main.js?v=16"></script>
+<!-- 7 · WHAT YOU GET -->
+<section class="section section--tint" id="included">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">What you get</span>
+      <h2>What you get with the workflow</h2>
+    </div>
+    <div class="included">
+      <div class="inc"><span class="dot">1</span><div><h3>The complete prompt and rule system</h3><p>20 prompts and 10 money-handling rule sets that teach your assistant how your money works.</p></div></div>
+      <div class="inc"><span class="dot">2</span><div><h3>The personal income statement workbook</h3><p>Your own private copy in Google Sheets — linked budget and calculation tabs, ready to use.</p></div></div>
+      <div class="inc"><span class="dot">3</span><div><h3>A 5-page setup guide (PDF)</h3><p>A 21-step guided setup, plus everyday use and troubleshooting.</p></div></div>
+      <div class="inc"><span class="dot">4</span><div><h3>Email support for setup</h3><p>Stuck on the first run? Email me and I'll help you get it working.</p></div></div>
+    </div>
+
+    <div class="req">
+      <h3>Before you buy, you'll need:</h3>
+      <ul>
+        <li>A Google account.</li>
+        <li>An AI assistant that can <strong>read and edit</strong> Google Sheets — e.g. ChatGPT with Google Drive connected, or Claude with Google Sheets connected. <strong>This subscription is separate and not included.</strong></li>
+        <li>About 45 minutes for setup.</li>
+      </ul>
+    </div>
+
+    <div class="buybox" style="margin-top:28px">
+      <a class="btn" data-buy href="#">Get the Workflow, <span data-price>$19</span></a>
+      <p class="pricenote">Founding price for the first 100 buyers, then <span data-regular>$29</span>.</p>
+      <p class="fineprint">Requires a Google account and an AI assistant that can edit Google Sheets, such as ChatGPT or Claude. Subscription not included.</p>
+      <p class="note" style="margin-top:14px">One purchase. No app subscription for the workflow itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · WHO IT'S FOR -->
+<section class="section" id="fit">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Honest fit</span>
+      <h2>Who it's for, and who it isn't</h2>
+    </div>
+    <div class="two">
+      <div class="col">
+        <h3><span class="yes">✓</span> It's for you if…</h3>
+        <ul>
+          <li>You'd rather log your money yourself than let an app guess.</li>
+          <li>You like the control of a spreadsheet, but not the busywork.</li>
+          <li>You want to plan around your real life: paychecks, bills, goals.</li>
+          <li>You already use — or want to use — an AI assistant.</li>
+        </ul>
+      </div>
+      <div class="col col--no">
+        <h3><span class="no">✕</span> It's not for you if…</h3>
+        <ul>
+          <li>You want automatic bank syncing or transaction import.</li>
+          <li>You're looking for personal financial, tax, investment or legal advice.</li>
+          <li>You don't want to use an AI assistant.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · ABOUT -->
+<section class="section section--tint" id="about">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Who's behind it</span>
+      <h2>Who's behind it</h2>
+    </div>
+    <div class="about">
+      <!-- PLACEHOLDER: morgan.jpg — a professional photo -->
+      <img class="about__photo" src="morgan.jpg" width="160" height="160" alt="Morgan Branch" loading="lazy" />
+      <div>
+        <!-- PLACEHOLDER: [BIO] — 2–3 sentences about your background in money/finance. -->
+        <p>[BIO: 2–3 sentences about your background in personal finance, investing, retirement planning and business consulting.]</p>
+        <p>This workflow is the first step in a larger body of work on money. I'm writing a book on holistic wealth-building, and budgeting is where it starts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Questions</span>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Can you see my budget?</summary><div class="body"><p>No. You work in your own private copy. Making a copy does not give me access to it.</p></div></details>
+      <details><summary>Does it connect to my bank?</summary><div class="body"><p>No. You log activity yourself in plain words. That's the point: you stay aware of every dollar.</p></div></details>
+      <details><summary>Which AI assistants work?</summary><div class="body"><p>Any assistant that can read and edit Google Sheets, such as ChatGPT with Google Drive connected or Claude with Google Sheets connected. Editing features depend on your plan and settings.</p></div></details>
+      <details><summary>Does the AI decide things for me?</summary><div class="body"><p>No. Your CFO records what you tell it and helps you think through your own numbers. You choose whether it shows you each entry first or records routine items directly, and you make every decision. It's an educational tool, not financial advice.</p></div></details>
+      <details><summary>What if my assistant can't edit the sheet?</summary><div class="body"><p>The setup guide's troubleshooting covers the common causes. You can also email <a href="mailto:info@morganbranch.co">info@morganbranch.co</a>.</p></div></details>
+      <details><summary>Does it work on my phone?</summary><div class="body"><p>Yes — through the Google Sheets app and your assistant's mobile app, if your plan supports editing.</p></div></details>
+      <details><summary>What's the founding price?</summary><div class="body"><p>The first 100 buyers pay <span data-price>$19</span>. After that, the price is <span data-regular>$29</span>.</p></div></details>
+      <details><summary>What's your refund policy?</summary>
+        <!-- PLACEHOLDER: [REFUND POLICY] — decide this before launch. -->
+        <div class="body"><p>[REFUND POLICY — e.g. “Because this is a digital product delivered instantly, all sales are final.” Edit to your actual policy before launch.]</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · NEWSLETTER -->
+<section class="section section--tint" id="newsletter">
+  <div class="wrap">
+    <div class="news">
+      <h3>Not ready yet?</h3>
+      <p>Get my newsletter on money, budgeting and building wealth.</p>
+      <!-- PLACEHOLDER: GHOST_SIGNUP.
+           Option A — paste your Ghost "Embeddable signup form" <script>/<iframe> here, replacing this form.
+           Option B — leave this form; set CONFIG.GHOST_SIGNUP to your Ghost form POST URL and it will submit there. -->
+      <form data-ghost method="post" action="#" target="_blank" rel="noopener">
+        <label class="skip" for="news-email">Email address</label>
+        <input id="news-email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · FINAL CTA -->
+<section class="section" id="buy">
+  <div class="wrap section__head" style="margin-bottom:0">
+    <span class="eyebrow">Your copy. Your decisions.</span>
+    <h2>Your money, your system. A Personal CFO you can talk to.</h2>
+    <div class="buybox" style="margin-top:22px">
+      <a class="btn" data-buy href="#">Get the Workflow, <span data-price>$19</span></a>
+      <p class="pricenote">Founding price for the first 100 buyers, then <span data-regular>$29</span>.</p>
+      <p class="fineprint">Requires a Google account and an AI assistant that can edit Google Sheets, such as ChatGPT or Claude. Subscription not included.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <p class="disclaimer">Educational budgeting tool only. Not financial, tax, investment or legal advice. AI assistants can make mistakes; check saved entries against your own records.</p>
+    <p>© <span id="year">2026</span> Morgan Branch · <a href="mailto:info@morganbranch.co">info@morganbranch.co</a></p>
+  </div>
+</footer>
+
+<!-- Sticky mobile buy bar -->
+<div class="stickybar" role="complementary" aria-label="Buy">
+  <a class="btn" data-buy href="#">Get the Workflow, <span data-price>$19</span></a>
+</div>
+
+<!-- Minimal JS: apply CONFIG in one place -->
+<script>
+  (function(){
+    var c = window.CONFIG || {};
+    if (c.FOUNDING_PRICE) document.querySelectorAll('[data-price]').forEach(function(el){el.textContent=c.FOUNDING_PRICE;});
+    if (c.REGULAR_PRICE)  document.querySelectorAll('[data-regular]').forEach(function(el){el.textContent=c.REGULAR_PRICE;});
+    if (c.BUY_URL) document.querySelectorAll('[data-buy]').forEach(function(a){a.setAttribute('href',c.BUY_URL);a.setAttribute('rel','noopener');});
+    if (c.PRODUCT_NAME){
+      document.querySelectorAll('[data-product]').forEach(function(el){el.textContent=c.PRODUCT_NAME;});
+      document.title = c.PRODUCT_NAME + " | Your Personal CFO";
+      var ogt=document.querySelector('meta[property="og:title"]');
+      if (ogt) ogt.setAttribute('content', c.PRODUCT_NAME + " | Your Personal CFO");
+    }
+    // Newsletter: if GHOST_SIGNUP is a URL, point the fallback form at it.
+    var f=document.querySelector('form[data-ghost]');
+    if (f && c.GHOST_SIGNUP && /^https?:\/\//.test(c.GHOST_SIGNUP)) f.setAttribute('action', c.GHOST_SIGNUP);
+    var y=document.getElementById('year'); if (y) y.textContent=new Date().getFullYear();
+  })();
+</script>
 </body>
 </html>
